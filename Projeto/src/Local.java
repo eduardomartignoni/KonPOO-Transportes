@@ -17,4 +17,7 @@ public class Local {
 		return "Cidade: " + cidade + "; Codigo: " + codigo + "; Nome: " + nome + ";\n";
 	}
 
+	public String getCidade() {
+		return cidade;
+	}
 }
