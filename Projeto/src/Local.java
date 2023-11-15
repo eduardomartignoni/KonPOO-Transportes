@@ -1,13 +1,16 @@
 public class Local {
 
-	private String cidade;
-	private int codigo;
+	private final String cidade;
+	private final int codigo;
 	private static int codigoAUX = 1;
-	private String nome;
+	private final String nome;
+	private final double distancia;
 
-	public Local(String cidade, String nome) {
+	public Local(String cidade, String nome, double distancia) {
+		this.nome = nome;
 		this.cidade = cidade;
-		setNome(nome);
+		this.distancia = distancia;
+
 		this.codigo = codigoAUX;
 		codigoAUX++;
 	}
@@ -24,14 +27,8 @@ public class Local {
 		return nome;
 	}
 
-	public void setNome(String nome) {
-		if (nome != null && !nome.isEmpty()) {
-			this.nome = nome;
-		}
-	}
-
 	@Override
 	public String toString() {
-		return "Cidade: " + cidade + "; Codigo: " + codigo + "; Nome: " + nome + ";\n";
+		return "[" + codigo + "] "+ cidade + " - " + nome + distancia+ "\n";
 	}
 }
