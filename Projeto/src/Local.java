@@ -7,17 +7,31 @@ public class Local {
 
 	public Local(String cidade, String nome) {
 		this.cidade = cidade;
-		this.nome = nome;
+		setNome(nome);
 		this.codigo = codigoAUX;
 		codigoAUX++;
+	}
+
+	public String getCidade() {
+		return cidade;
+	}
+
+	public int getCodigo() {
+		return codigo;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		if (nome != null && !nome.isEmpty()) {
+			this.nome = nome;
+		}
 	}
 
 	@Override
 	public String toString() {
 		return "Cidade: " + cidade + "; Codigo: " + codigo + "; Nome: " + nome + ";\n";
-	}
-
-	public String getCidade() {
-		return cidade;
 	}
 }
