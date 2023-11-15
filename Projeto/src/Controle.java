@@ -1,6 +1,5 @@
 import java.util.*;
 
-
 public class Controle {
 
 	private ArrayList<Carga> cargas;
@@ -34,7 +33,24 @@ public class Controle {
 		for (Caminhao caminhao : frota) return !nome.equalsIgnoreCase(caminhao.getNome());
 		return true;
 	}
-	public void novoCliente() {}
+	public void novoCliente(int codigo, String nome, String telefone) {
+		Cliente cliente = new Cliente(codigo, nome, telefone);
+		clientes.add(cliente);
+		ordenaClientes();
+	}
+
+	public void ordenaClientes(){
+		ClienteComparator c = new ClienteComparator();
+		clientes.sort(c);
+	}
+
+	public boolean consultaCodigoUnicoCliente(int codigo){
+		if (clientes.size()==0) return true;
+		for (Cliente cliente : clientes) {
+			if (cliente.getCodigo()==codigo) return false;
+		}
+		return true;
+	}
 
 	public void novoLocal(String cidade, String nome, double distancia) {
 		Local destino = new Local(cidade, nome, distancia);
@@ -84,21 +100,27 @@ public class Controle {
 
 	public void salvarDados() {}
 
-	static class CaminhaoComparator implements java.util.Comparator<Caminhao>{
+	static class CaminhaoComparator implements Comparator<Caminhao>{
 		@Override
 		public int compare(Caminhao a, Caminhao b){
-			return a.getNome().compareTo(b.getNome());
+			return a.getNome().compareToIgnoreCase(b.getNome());
 		}
 	}
-	static class LocalComparatorCidade implements java.util.Comparator<Local>{
+	static class LocalComparatorCidade implements Comparator<Local>{
 		@Override
 		public int compare(Local a, Local b){
 			return a.getCidade().compareTo(b.getCidade());
 		}
 	}
-	static class LocalComparatorCodigo implements java.util.Comparator<Local>{
+	static class LocalComparatorCodigo implements Comparator<Local>{
 		@Override
 		public int compare(Local a, Local b){
+			return a.getCodigo() - b.getCodigo();
+		}
+	}
+	static class ClienteComparator implements Comparator<Cliente>{
+		@Override
+		public int compare(Cliente a, Cliente b){
 			return a.getCodigo() - b.getCodigo();
 		}
 	}

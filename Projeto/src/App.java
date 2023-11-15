@@ -2,9 +2,11 @@ import java.util.Scanner;
 public class App {
     Controle controle = new Controle();
     Scanner in = new Scanner(System.in);
-    public void run(){
+
+    public void run() {
     }
-    public void novoLocal(){
+
+    public void novoLocal() {
         System.out.println("""
                 ---- CADASTRAR NOVO DESTINO ----
 
@@ -19,9 +21,9 @@ public class App {
         double distancia = in.nextDouble();
         controle.novoLocal(cidade, nome, distancia);
         System.out.println("Destino cadastrado.");
-        }
+    }
 
-    public void novoCaminhao(){
+    public void novoCaminhao() {
         System.out.println("""
                 ---- CADASTRAR NOVO CAMINHÃO ----
 
@@ -29,7 +31,7 @@ public class App {
         String nome = in.nextLine();
 
         if ((!controle.consultaNomeUnicoCaminhao(nome))) {
-            int menu=0;
+            int menu = 0;
             do {
                 System.out.println("""
                         ERRO: CAMINHÃO JÁ CADASTRADO
@@ -62,7 +64,5 @@ public class App {
 
         controle.novoCaminhao(nome, autonomia, velocidade, custoPorKm);
         System.out.println("Caminhão cadastrado na frota");
-
     }
 }
-
