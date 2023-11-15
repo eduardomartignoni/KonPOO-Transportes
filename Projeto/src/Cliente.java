@@ -17,6 +17,9 @@ public class Cliente {
 	public String getNome() {
 		return nome;
 	}
+	public static void setCodigoAUX(int codigoAUX) {
+		Cliente.codigoAUX = codigoAUX;
+	}
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
