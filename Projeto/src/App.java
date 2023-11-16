@@ -16,7 +16,7 @@ public class App {
         System.out.println("Insira o nome do destino: ");
         String nome = in.nextLine();
         // NAO SEI SE É ISSO OS 50KM DA DISTANCIA??
-        if (controle.consultaAlgumDestinoJaCadastrado()) controle.novoLocal(cidade, nome, 50);
+        if (controle.verificaAlgumDestinoJaCadastrado()) controle.novoLocal(cidade, nome, 50);
         else System.out.println("Informe a distância da origem: ");
         double distancia = in.nextDouble();
         controle.novoLocal(cidade, nome, distancia);
@@ -30,7 +30,7 @@ public class App {
                 Insira o nome do caminhão:\s""");
         String nome = in.nextLine();
 
-        if ((!controle.consultaNomeUnicoCaminhao(nome))) {
+        if ((!controle.verificaNomeUnicoCaminhao(nome))) {
             int menu = 0;
             do {
                 System.out.println("""
@@ -51,7 +51,7 @@ public class App {
                         menu = 2;
                     }
                 }
-            } while (!controle.consultaNomeUnicoCaminhao(nome) || menu != 1);
+            } while (!controle.verificaNomeUnicoCaminhao(nome) || menu != 1);
         }
         System.out.println("\nInsira a autonomia do caminhão (Km/L): ");
         double autonomia = in.nextDouble();

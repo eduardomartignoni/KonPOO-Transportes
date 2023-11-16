@@ -9,11 +9,9 @@ public class Controle {
 	private final ArrayList<Local> locais = new ArrayList<>();
 	private ArrayList<TipoCarga> tipos;
 
-	public void alteraStatus() {}
-
 	public void carregarDados() {}
 
-	public void consultaCargas() {}
+
 
 	public void fretar() {}
 
@@ -28,7 +26,7 @@ public class Controle {
 		CaminhaoComparator c = new CaminhaoComparator();
 		frota.sort(c);
 	}
-	public boolean consultaNomeUnicoCaminhao(String nome){
+	public boolean verificaNomeUnicoCaminhao(String nome){
 		if (frota.size()==0) return true;
 		for (Caminhao caminhao : frota) return !nome.equalsIgnoreCase(caminhao.getNome());
 		return true;
@@ -44,7 +42,7 @@ public class Controle {
 		clientes.sort(c);
 	}
 
-	public boolean consultaCodigoUnicoCliente(int codigo){
+	public boolean verificaCodigoUnicoCliente(int codigo){
 		if (clientes.size()==0) return true;
 		for (Cliente cliente : clientes) {
 			if (cliente.getCodigo()==codigo) return false;
@@ -57,35 +55,18 @@ public class Controle {
 		locais.add(destino);
 	}
 
-	public boolean consultaAlgumDestinoJaCadastrado(){
+	public boolean verificaAlgumDestinoJaCadastrado(){
 		return (!locais.isEmpty());
 	}
-	public void ordenaLocaisPorCidade(){
-		LocalComparatorCidade c = new LocalComparatorCidade();
-		locais.sort(c);
-	}
+
 	public void ordenaLocaisPorCodigo(){
-		LocalComparatorCodigo c = new LocalComparatorCodigo();
+		LocalComparator c = new LocalComparator();
 		locais.sort(c);
 	}
 
-	// DA PRA MELHORAR ESSES 2 STRINGS E COLOCAR TODAS INFOS DO LOCAL
-	public String exibirLocaisPorCidade(){
-		ordenaLocaisPorCidade();
-		StringBuilder s = new StringBuilder("Destinos: \n");
-		if (locais.size()==0) {
-			s.append("Nenhum Destino cadastrado");
-			return s.toString();
-		}
-		for (Local local : locais) {
-			s.append(local.toString());
-		}
-		ordenaLocaisPorCodigo();
-		return s.toString();
-	}
 	public String exibirLocaisPorCodigo(){
 		ordenaLocaisPorCodigo();
-		StringBuilder s = new StringBuilder("Destinos: \n");
+		StringBuilder s = new StringBuilder("Destinos: \n\n");
 		if (locais.size()==0) {
 			s.append("Nenhum Destino cadastrado");
 			return s.toString();
@@ -98,6 +79,59 @@ public class Controle {
 
 	public void novoTipo() {}
 
+	public String novaCarga(int codigo, int peso, int tempoMaximo, double valorDeclarado, Local destino, Local origem, Cliente cliente, TipoCarga tipoCarga){
+		Carga carga = new Carga(codigo, peso, tempoMaximo, valorDeclarado, destino, origem, cliente, tipoCarga);
+		cargasPendentes.add(carga);
+		cargas.add(carga);
+		ordenaCargas();
+
+		return carga.toString();
+	}
+	public void ordenaCargas(){
+		CargasComparator c = new CargasComparator();
+		cargas.sort(c);
+	}
+	public String consultaTodasCargas() {
+		StringBuilder s = new StringBuilder("Cargas: \n\n");
+		if (cargas.size()==0) {
+			s.append("Nenhuma carga cadastrada");
+			return s.toString();
+		}
+		for (Carga carga : cargas) {
+			s.append(carga.toString()).append("\n\n");
+		}
+		return s.toString();
+	}
+	public String consultaCarga(int codigo){
+		for(Carga carga : cargas){
+			if (carga.getCodigo()==codigo) return carga.toString();
+		}
+		return "ERR0: Carga não encontrada";
+	}
+	public String alteraStatus(int codigo, int status) {
+		StringBuilder s = new StringBuilder();
+		for (Carga carga : cargas){
+			if (carga.getCodigo()==codigo) {
+				if (carga.getStatus()== Carga.Status.FINALIZADA) return "Carga FINALIZADA, não é possivel alterar seu status";
+				if (status==-1) {
+					carga.cancelar();
+					s.append("Carga cancelada");
+					break;
+				}
+				if (status==0) {
+					carga.finalizar();
+					s.append("Carga Finalizada");
+					break;
+				}
+				if (status==1) {
+					carga.locar();
+					s.append("Carga Locada");
+					break;
+				}
+			}
+		}
+		return s.toString();
+	}
 	public void salvarDados() {}
 
 	static class CaminhaoComparator implements Comparator<Caminhao>{
@@ -106,21 +140,24 @@ public class Controle {
 			return a.getNome().compareToIgnoreCase(b.getNome());
 		}
 	}
-	static class LocalComparatorCidade implements Comparator<Local>{
-		@Override
-		public int compare(Local a, Local b){
-			return a.getCidade().compareTo(b.getCidade());
-		}
-	}
-	static class LocalComparatorCodigo implements Comparator<Local>{
+
+	static class LocalComparator implements Comparator<Local>{
 		@Override
 		public int compare(Local a, Local b){
 			return a.getCodigo() - b.getCodigo();
 		}
 	}
+
 	static class ClienteComparator implements Comparator<Cliente>{
 		@Override
 		public int compare(Cliente a, Cliente b){
+			return a.getCodigo() - b.getCodigo();
+		}
+	}
+
+	static class CargasComparator implements  Comparator<Carga>{
+		@Override
+		public int compare(Carga a, Carga b){
 			return a.getCodigo() - b.getCodigo();
 		}
 	}

@@ -7,6 +7,11 @@ public abstract class TipoCarga{
 	public TipoCarga(String descricao) {
 		this.descricao = descricao;
 	}
+	public TipoCarga(String descricao, double fatorPeso, int numero){
+		this.descricao = descricao;
+		this.fatorPeso=fatorPeso;
+		this.numero = numero;
+	}
 
 	public String getDescricao() {
 		return descricao;

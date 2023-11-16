@@ -1,34 +1,78 @@
 public class Carga {
 
-	private int codigo;
-	private static int codigoAUX;
+	private final int codigo;
 
-	private int peso;
-	private int tempoMaximo;
-	private double valorDeclarado;
+	private final int peso;
+	private final int tempoMaximo;
+	private final double valorDeclarado;
 
-	private Local destino;
-	private Local origem;
-	private Cliente cliente;
+	private final Local destino;
+	private final Local origem;
+	private final Cliente cliente;
 	private Status status;
-	private TipoCarga tipoCarga;
+	private final TipoCarga tipoCarga;
 
-	public void cancelar() {}
+	private Caminhao caminhaoDesignado;
 
-	public int distancia() {
-		return 0;
+	public Carga(int codigo, int peso, int tempoMaximo, double valorDeclarado, Local destino, Local origem, Cliente cliente, TipoCarga tipoCarga) {
+		this.codigo = codigo;
+		this.peso = peso;
+		this.tempoMaximo = tempoMaximo;
+		this.valorDeclarado = valorDeclarado;
+		this.destino = destino;
+		this.origem = origem;
+		this.cliente = cliente;
+		this.status = Status.PENDENTE;
+		this.tipoCarga = tipoCarga;
 	}
 
-	public void finalizar() {}
+	public void cancelar() {
+		status = Status.CANCELADA;
+	}
+
+	//ISSO AQUI TA ERRADO 100%
+	public double distancia() {
+		double distancia = destino.getDistancia()-origem.getDistancia();
+		if (distancia<50) return 50;
+		return distancia;
+	}
+
+	public void finalizar() {
+		status = Status.FINALIZADA;
+	}
 
 	public double frete() {
-		return 0;
+		return precoPorDistancia()+precoPorPeso();
 	}
 
-	public void locar() {}
+	public void locar() {
+		status = Status.LOCADA;
+	}
 
-	public double precoDistancia() {
-		return 0;
+	public double precoPorDistancia() {
+		return distancia()*caminhaoDesignado.getCustoPorKm();
+	}
+	public double precoPorPeso(){
+		return peso*tipoCarga.fatorPeso;
+	}
+
+	public int getCodigo(){
+		return codigo;
+	}
+	public Status getStatus(){
+		return status;
+	}
+
+	public void setCaminhaoDesignado(Caminhao caminhaoDesignado){
+		this.caminhaoDesignado = caminhaoDesignado;
+	}
+	@Override
+	public String toString() {
+		return  "Carga [" + codigo + "] "+ status + " - " + tipoCarga + "\n" +
+				"Cliente: "+ cliente + "\tOrigem: " + origem + "\tDestino: " + destino + "\n" +
+				peso + " t\t" + valorDeclarado + " R$\t" + tempoMaximo + " dias\n\n" +
+				caminhaoDesignado.toString() + "\n\n" +
+				"Valor Total do Frete: " + String.format("%.2f", frete()) + " R$";
 	}
 
 	enum Status {

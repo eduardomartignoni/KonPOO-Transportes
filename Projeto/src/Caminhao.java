@@ -19,4 +19,14 @@ public class Caminhao {
 	public String getNome() {
 		return nome;
 	}
+
+	public double getCustoPorKm(){
+		return custoPorKm;
+	}
+
+	@Override
+	public String toString() {
+		return "[" + codigo + "] " + nome + "\n" +
+				autonomia + " Km/\t" + velocidade + " Km/h\t" + custoPorKm + " R$/Km" 				;
+	}
 }

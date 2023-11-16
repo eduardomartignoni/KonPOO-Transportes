@@ -27,6 +27,10 @@ public class Local {
 		return nome;
 	}
 
+	public double getDistancia(){
+		return distancia;
+	}
+
 	@Override
 	public String toString() {
 		return "[" + codigo + "] "+ cidade + " - " + nome + distancia+ "\n";
