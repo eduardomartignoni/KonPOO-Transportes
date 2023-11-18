@@ -51,11 +51,11 @@ public class Controle {
 		for (Caminhao caminhao : frota) return !nome.equalsIgnoreCase(caminhao.getNome());
 		return true;
 	}
-	/*public void novoCliente(int codigo, String nome, String telefone) {
-		Cliente cliente = new Cliente(nome, telefone);
+	public void novoCliente(int codigo, String nome, String telefone) {
+		Cliente cliente = new Cliente (nome, telefone, codigo); 
 		clientes.add(cliente);
 		ordenaClientes();
-	}*/
+	}
 
 	public void ordenaClientes(){
 		ClienteComparator c = new ClienteComparator();
@@ -70,11 +70,11 @@ public class Controle {
 		return true;
 	}
 
-	/*/
-	public void novoLocal(String cidade, String nome, double distancia) {
-		Local destino = new Local(cidade, nome, distancia);
+	//tinha uma variavel 'distancia' que não se encontra no construtor da classe local, criar a variavel ou deixar assim??	
+	public void novoLocal(String cidade, String nome, int latitude, int longitude) {
+	Local destino = new Local(cidade, nome, latitude, latitude);
 		locais.add(destino);
-	}*/
+	}
 
 	public boolean verificaAlgumDestinoJaCadastrado(){
 		return (!locais.isEmpty());
@@ -129,12 +129,12 @@ public class Controle {
 		}
 		return "ERR0: Carga não encontrada";
 	}
-	/*
+	/* 
 	public String alteraStatus(int codigo, int status) {
 		StringBuilder s = new StringBuilder();
 		for (Carga carga : cargas){
 			if (carga.getCodigo()==codigo) {
-				if (carga.getStatus()== Carga.Status.FINALIZADA) return "Carga FINALIZADA, não é possivel alterar seu status";
+				if (carga.getStatus()== carga.Status.FINALIZADA) return "Carga FINALIZADA, não é possivel alterar seu status";
 				if (status==-1) {
 					carga.cancelar();
 					s.append("Carga cancelada");
