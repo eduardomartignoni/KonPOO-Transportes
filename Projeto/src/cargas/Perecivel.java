@@ -1,3 +1,4 @@
+package cargas;
 public class Perecivel extends TipoCarga{
 
 	private static final double fatorPesoS = 2;

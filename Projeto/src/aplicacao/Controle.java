@@ -1,9 +1,16 @@
+//comentei alguns métodos que devem ser corrigidos
+//carregar dados eh o salvar dados, tem que fazer os dois
+
+package aplicacao;
 import java.io.BufferedWriter;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.nio.file.*;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
+
+import cargas.*;
+import entidades.*;
 
 public class Controle {
 
@@ -63,10 +70,11 @@ public class Controle {
 		return true;
 	}
 
+	/*/
 	public void novoLocal(String cidade, String nome, double distancia) {
 		Local destino = new Local(cidade, nome, distancia);
 		locais.add(destino);
-	}
+	}*/
 
 	public boolean verificaAlgumDestinoJaCadastrado(){
 		return (!locais.isEmpty());
@@ -121,6 +129,7 @@ public class Controle {
 		}
 		return "ERR0: Carga não encontrada";
 	}
+	/*
 	public String alteraStatus(int codigo, int status) {
 		StringBuilder s = new StringBuilder();
 		for (Carga carga : cargas){
@@ -144,7 +153,7 @@ public class Controle {
 			}
 		}
 		return s.toString();
-	}
+	}*/
 	public void salvarDados() {}
 
 	static class CaminhaoComparator implements Comparator<Caminhao>{

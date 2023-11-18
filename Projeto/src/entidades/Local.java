@@ -1,3 +1,4 @@
+package entidades;
 public class Local {
 
 	private final String cidade;

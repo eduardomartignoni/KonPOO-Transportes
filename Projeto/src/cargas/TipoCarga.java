@@ -1,3 +1,4 @@
+package cargas;
 public abstract class TipoCarga{
 
 	protected String descricao;

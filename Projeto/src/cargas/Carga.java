@@ -1,3 +1,13 @@
+//rever essa classe: construtor(refatorar?), cvsString/toString (esta sem todos os atributos)
+//arrumar coisas relacionadas a distancia
+//revisar métodos no geral
+
+package cargas;
+
+import entidades.Caminhao;
+import entidades.Cliente;
+import entidades.Local;
+
 public class Carga {
 
 	private final int codigo;
@@ -30,28 +40,33 @@ public class Carga {
 		status = Status.CANCELADA;
 	}
 
-	//ISSO AQUI TA ERRADO 100%
+	//ISSO AQUI TA ERRADO 100% -> ta mesmo, tem que arrumar com o novo modo de distancia
+	/*/
 	public double distancia() {
 		double distancia = destino.getDistancia()-origem.getDistancia();
 		if (distancia<50) return 50;
 		return distancia;
-	}
+	}*/
 
 	public void finalizar() {
 		status = Status.FINALIZADA;
 	}
 
+	/*
 	public double frete() {
 		return precoPorDistancia()+precoPorPeso();
-	}
+	}*/
 
 	public void locar() {
 		status = Status.LOCADA;
 	}
 
+	/*
 	public double precoPorDistancia() {
 		return distancia()*caminhaoDesignado.getCustoPorKm();
 	}
+	*/
+
 	public double precoPorPeso(){
 		return peso*tipoCarga.fatorPeso;
 	}
@@ -66,6 +81,8 @@ public class Carga {
 	public void setCaminhaoDesignado(Caminhao caminhaoDesignado){
 		this.caminhaoDesignado = caminhaoDesignado;
 	}
+	
+	/*/
 	@Override
 	public String toString() {
 		return  "Carga [" + codigo + "] "+ status + " - " + tipoCarga + "\n" +
@@ -78,7 +95,8 @@ public class Carga {
 	public String csvString(){
 		return codigo + ";" + peso + ";" + tempoMaximo + ";" + valorDeclarado + ";" + destino.getCodigo() + ";" +
 			 origem.getCodigo() + ";" + cliente.getCodigo() + ";" + status.id + ";" + tipoCarga.getNumero();
-	}
+	}*/
+	
 	enum Status {
 
 		CANCELADA(-1, "Cancelada"), FINALIZADA(0, "Finalizada"),

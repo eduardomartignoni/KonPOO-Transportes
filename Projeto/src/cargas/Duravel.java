@@ -1,3 +1,4 @@
+package cargas;
 public class Duravel extends TipoCarga {
 
 	private static final double fatorPesoS = 1.5;
