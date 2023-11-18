@@ -1,12 +1,11 @@
 public class Duravel extends TipoCarga {
 
-	private final double fatorPeso = 1.5;
+	private static final double fatorPesoS = 1.5;
 	private final String materialPrincipal;
-	private final int numero = 2;
 	private final String setor;
 
-	public Duravel(String descricao, String materialPrincipal, String setor) {
-		super(descricao);
+	public Duravel(String descricao, int numero, String materialPrincipal, String setor) {
+		super(descricao, fatorPesoS, numero);
 		this.materialPrincipal = materialPrincipal;
 		this.setor = setor;
 	}
@@ -22,5 +21,10 @@ public class Duravel extends TipoCarga {
 	@Override
 	public String toString() {
 		return super.toString() + "Material Principal: " + materialPrincipal + "; Setor: " + setor + ";\n";
+	}
+
+	@Override
+	public String csvString() {
+		return super.csvString() + ";" + materialPrincipal + ";" + setor;
 	}
 }

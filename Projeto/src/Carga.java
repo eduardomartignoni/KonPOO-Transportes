@@ -75,6 +75,10 @@ public class Carga {
 				"Valor Total do Frete: " + String.format("%.2f", frete()) + " R$";
 	}
 
+	public String csvString(){
+		return codigo + ";" + peso + ";" + tempoMaximo + ";" + valorDeclarado + ";" + destino.getCodigo() + ";" +
+			 origem.getCodigo() + ";" + cliente.getCodigo() + ";" + status.id + ";" + tipoCarga.getNumero();
+	}
 	enum Status {
 
 		CANCELADA(-1, "Cancelada"), FINALIZADA(0, "Finalizada"),
