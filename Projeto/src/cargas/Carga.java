@@ -37,35 +37,28 @@ public class Carga {
 	}
 
 	public void cancelar() {
-		status = Status.CANCELADA;
+		this.status = Status.CANCELADA;
 	}
-
-	//ISSO AQUI TA ERRADO 100% -> ta mesmo, tem que arrumar com o novo modo de distancia
-	/*/
+	
 	public double distancia() {
-		double distancia = destino.getDistancia()-origem.getDistancia();
-		if (distancia<50) return 50;
-		return distancia;
-	}*/
+		return Local.distancia(origem, destino);
+	}
 
 	public void finalizar() {
 		status = Status.FINALIZADA;
 	}
 
-	/*
 	public double frete() {
 		return precoPorDistancia()+precoPorPeso();
-	}*/
+	}
 
 	public void locar() {
 		status = Status.LOCADA;
 	}
 
-	/*
 	public double precoPorDistancia() {
 		return distancia()*caminhaoDesignado.getCustoPorKm();
 	}
-	*/
 
 	public double precoPorPeso(){
 		return peso*tipoCarga.fatorPeso;
@@ -82,7 +75,7 @@ public class Carga {
 		this.caminhaoDesignado = caminhaoDesignado;
 	}
 	
-	/*/
+	
 	@Override
 	public String toString() {
 		return  "Carga [" + codigo + "] "+ status + " - " + tipoCarga + "\n" +
@@ -94,8 +87,9 @@ public class Carga {
 
 	public String csvString(){
 		return codigo + ";" + peso + ";" + tempoMaximo + ";" + valorDeclarado + ";" + destino.getCodigo() + ";" +
-			 origem.getCodigo() + ";" + cliente.getCodigo() + ";" + status.id + ";" + tipoCarga.getNumero();
-	}*/
+			 origem.getCodigo() + ";" + cliente.getCodigo() + ";" + status.id + ";" + tipoCarga.getNumero() + ";" + 
+			 caminhaoDesignado.getCodigo();
+	}
 	
 	enum Status {
 

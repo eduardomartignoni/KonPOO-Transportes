@@ -34,6 +34,10 @@ public class Caminhao {
 		return custoPorKm;
 	}
 
+	public int getCodigo() {
+		return codigo;
+	}
+
 	@Override
 	public String toString() {
 		return "[" + codigo + "] " + nome + "\n" +

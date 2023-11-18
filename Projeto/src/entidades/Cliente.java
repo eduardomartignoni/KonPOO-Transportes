@@ -36,6 +36,6 @@ public class Cliente {
 	}
 
 	public String csvString() {
-		return codigo + "," + nome + "," + telefone;
+		return codigo + ";" + nome + ";" + telefone;
 	}
 }

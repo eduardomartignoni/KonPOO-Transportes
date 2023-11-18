@@ -61,7 +61,7 @@ public class Local {
 	}
 
 	public String csvString() {
-		return cidade + "," + codigo + "," + nome + "," + latitude + "," + longitude;
+		return cidade + ";" + codigo + ";" + nome + ";" + latitude + ";" + longitude;
 	}
 	
 }
