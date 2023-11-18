@@ -1,3 +1,8 @@
+import java.io.BufferedWriter;
+import java.io.PrintWriter;
+import java.nio.charset.Charset;
+import java.nio.file.*;
+import java.nio.file.StandardOpenOption;
 import java.util.*;
 
 public class Controle {
@@ -9,7 +14,15 @@ public class Controle {
 	private final ArrayList<Local> locais = new ArrayList<>();
 	private ArrayList<TipoCarga> tipos;
 
-	public void carregarDados() {}
+	public void carregarDados(String dados){
+		Path caminho = Paths.get("dados.csv");
+		try (BufferedWriter bw = Files.newBufferedWriter(caminho, Charset.defaultCharset(), StandardOpenOption.APPEND);
+            PrintWriter writer = new PrintWriter(bw);){
+			writer.println(dados);
+		} catch (Exception e) {
+			System.out.println("Erro ao carregar dados");
+		}
+	}
 
 
 
@@ -31,11 +44,11 @@ public class Controle {
 		for (Caminhao caminhao : frota) return !nome.equalsIgnoreCase(caminhao.getNome());
 		return true;
 	}
-	public void novoCliente(int codigo, String nome, String telefone) {
-		Cliente cliente = new Cliente(codigo, nome, telefone);
+	/*public void novoCliente(int codigo, String nome, String telefone) {
+		Cliente cliente = new Cliente(nome, telefone);
 		clientes.add(cliente);
 		ordenaClientes();
-	}
+	}*/
 
 	public void ordenaClientes(){
 		ClienteComparator c = new ClienteComparator();
