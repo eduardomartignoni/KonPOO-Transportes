@@ -1,13 +1,10 @@
 public abstract class TipoCarga{
 
 	protected String descricao;
-	protected double fatorPeso;
-	protected int numero;
+	protected final double fatorPeso;
+	protected final int numero;
 
-	public TipoCarga(String descricao) {
-		this.descricao = descricao;
-	}
-	public TipoCarga(String descricao, double fatorPeso, int numero){
+	protected TipoCarga(String descricao, double fatorPeso, int numero){
 		this.descricao = descricao;
 		this.fatorPeso=fatorPeso;
 		this.numero = numero;
@@ -28,6 +25,10 @@ public abstract class TipoCarga{
 	@Override
 	public String toString() {
 		return "Numero: " + numero + ";\nDescricao: " + descricao + ";\n";
+	}
+
+	public String csvString(){
+		return fatorPeso + ";" + descricao + ";" + numero;
 	}
 
 }
