@@ -1,3 +1,4 @@
+package entidades;
 public class Cliente {
 
 	private final int codigo;

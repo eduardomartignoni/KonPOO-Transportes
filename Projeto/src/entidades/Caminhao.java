@@ -1,3 +1,4 @@
+package entidades;
 public class Caminhao {
 
 	private final String nome;

@@ -1,3 +1,4 @@
+package aplicacao;
 import java.util.Scanner;
 public class App {
     Controle controle = new Controle();
@@ -6,6 +7,7 @@ public class App {
     public void run() {
     }
 
+    /*
     public void novoLocal() {
         System.out.println("""
                 ---- CADASTRAR NOVO DESTINO ----
@@ -21,7 +23,7 @@ public class App {
         double distancia = in.nextDouble();
         controle.novoLocal(cidade, nome, distancia);
         System.out.println("Destino cadastrado.");
-    }
+    }*/
 
     public void novoCaminhao() {
         System.out.println("""
