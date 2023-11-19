@@ -303,11 +303,12 @@ public class Controle {
 		for (Caminhao caminhao : frota) return !nome.equalsIgnoreCase(caminhao.getNome());
 		return true;
 	}
-	/*public void novoCliente(int codigo, String nome, String telefone) {
-		Cliente cliente = new Cliente(nome, telefone);
+
+	public void novoCliente(int codigo, String nome, String telefone) {
+		Cliente cliente = new Cliente (nome, telefone, codigo);
 		clientes.add(cliente);
 		ordenaClientes();
-	}*/
+	}
 
 	public void ordenaClientes(){
 		ClienteComparator c = new ClienteComparator();
@@ -322,11 +323,10 @@ public class Controle {
 		return true;
 	}
 
-	/*/
-	public void novoLocal(String cidade, String nome, double distancia) {
-		Local destino = new Local(cidade, nome, distancia);
+	public void novoLocal(String cidade, String nome, int latitude, int longitude) {
+		Local destino = new Local(cidade, nome, latitude, longitude);
 		locais.add(destino);
-	}*/
+	}
 
 	public boolean verificaAlgumDestinoJaCadastrado(){
 		return (!locais.isEmpty());
@@ -381,7 +381,7 @@ public class Controle {
 		}
 		return "ERR0: Carga não encontrada";
 	}
-	/*
+	
 	public String alteraStatus(int codigo, int status) {
 		StringBuilder s = new StringBuilder();
 		for (Carga carga : cargas){
@@ -405,7 +405,8 @@ public class Controle {
 			}
 		}
 		return s.toString();
-	}*/
+	}
+	
 	public String adicionarDados(String arquivo, String dados){
 		switch(arquivo){
 			case "caminhoes":
