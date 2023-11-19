@@ -3,10 +3,10 @@ public class Perecivel extends TipoCarga{
 
 	private static final double fatorPesoS = 2;
 	private String origem;
-	private int validade;
+	private String validade;
 
 
-	public Perecivel(String descricao, int numero, String origem, int validade) {
+	public Perecivel(String descricao, int numero, String origem, String validade) {
 		super(descricao, fatorPesoS, numero);
 		this.origem = origem;
 		this.validade = validade;
@@ -16,7 +16,7 @@ public class Perecivel extends TipoCarga{
 		return origem;
 	}
 
-	public int getValidade() {
+	public String getValidade() {
 		return validade;
 	}
 

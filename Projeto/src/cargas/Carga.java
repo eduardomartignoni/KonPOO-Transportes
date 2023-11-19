@@ -64,6 +64,10 @@ public class Carga {
 		return peso*tipoCarga.fatorPeso;
 	}
 
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
 	public int getCodigo(){
 		return codigo;
 	}
@@ -91,7 +95,7 @@ public class Carga {
 			 caminhaoDesignado.getCodigo();
 	}
 	
-	enum Status {
+	public enum Status {
 
 		CANCELADA(-1, "Cancelada"), FINALIZADA(0, "Finalizada"),
 		LOCADA(1, "Locada"), PENDENTE(2, "Pendente");

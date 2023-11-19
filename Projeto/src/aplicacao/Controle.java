@@ -1,12 +1,19 @@
 //comentei alguns métodos que devem ser corrigidos
 //carregar dados eh o salvar dados, tem que fazer os dois
+//verificar se numeros a ser lido são numeros mesmo numeros nos inicializadores
+//fazer metodo ordenaTipos e buscasporcodigo
+//fila de cargas para aquivo: jogar numa pilha toda a fila e jogar a pilha no csv; 
+// 								depois, jogar o csv na fila e estará em ordem
+
+
 
 package aplicacao;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.nio.file.*;
-import java.nio.file.StandardOpenOption;
 import java.util.*;
 
 import cargas.*;
@@ -21,21 +28,241 @@ public class Controle {
 	private final ArrayList<Local> locais = new ArrayList<>();
 	private ArrayList<TipoCarga> tipos;
 
-	public void carregarDados(String dados){
-		Path caminho = Paths.get("dados.csv");
-		try (BufferedWriter bw = Files.newBufferedWriter(caminho, Charset.defaultCharset(), StandardOpenOption.APPEND);
-            PrintWriter writer = new PrintWriter(bw);){
-			writer.println(dados);
-		} catch (Exception e) {
-			System.out.println("Erro ao carregar dados");
-		}
-	}
+	public void carregarDados(){}
 
 
 
 	public void fretar() {}
 
-	public void inicializaDados() {}
+	public String inicializaDados() {
+		StringBuilder s = new StringBuilder();
+		s.append(inicializaLocais() + "\n");
+		s.append(inicializaClientes() + "\n");
+		s.append(inicializaCaminhoes() + "\n");
+		s.append(inicializaTipos() + "\n");
+		s.append(inicializaCargas() + "\n");
+		s.append(inicializaFila() + "\n");
+		return s.toString();
+	}
+
+	private String inicializaLocais(){
+		Path locaisARQ = Paths.get("src\\entidades\\locais.csv");
+
+		try (BufferedReader reader = Files.newBufferedReader(locaisARQ, Charset.defaultCharset())) {
+			reader.readLine(); //pula a primeira (cabecalho)
+			String linha = null;
+ 			 while((linha = reader.readLine()) != null) {
+					Scanner sc = new Scanner(linha).useDelimiter(";");
+
+					String cidade, nome;
+					int codigo, latitude, longitude;
+
+					cidade = sc.next();
+					codigo = Integer.parseInt(sc.next());
+					nome = sc.next();
+					latitude = Integer.parseInt(sc.next());
+					longitude = Integer.parseInt(sc.next());
+
+					sc.close();
+					locais.add(new Local(cidade, codigo, nome, latitude, longitude));
+			 }
+			 ordenaLocaisPorCodigo();
+			 return "Locais carregados com sucesso";
+		} catch (IOException e) {
+			return "Erro ao carregar dados dos locais";
+		}
+
+	}
+
+	private String inicializaClientes(){
+		Path clientesARQ = Paths.get("src\\entidades\\clientes.csv");
+
+		try (BufferedReader reader = Files.newBufferedReader(clientesARQ, Charset.defaultCharset())) {
+			reader.readLine(); //pula a primeira (cabecalho)
+			String linha = null;
+ 			while((linha = reader.readLine()) != null) {
+					Scanner sc = new Scanner(linha).useDelimiter(";");
+
+					String telefone, nome;
+					int codigo;
+
+					codigo = Integer.parseInt(sc.next());
+					nome = sc.next();
+					telefone = sc.next();					
+
+					clientes.add(new Cliente(nome, telefone, codigo));
+					sc.close();
+			}
+
+			ordenaClientes();
+			return "Clientes carregados com sucesso";
+		
+		} catch (IOException e) {
+			return "Erro ao carregar dados dos clientes";
+		}
+	
+	}
+
+	private String inicializaCaminhoes(){
+		Path caminhoesARQ = Paths.get("src\\entidades\\caminhoes.csv");
+
+		try (BufferedReader reader = Files.newBufferedReader(caminhoesARQ, Charset.defaultCharset())) {
+			reader.readLine(); //pula a primeira (cabecalho)
+			String linha = null;
+ 			while((linha = reader.readLine()) != null) {
+					Scanner sc = new Scanner(linha).useDelimiter(";");
+
+					String nome;
+					double autonomia, velocidade, custoPorKm;
+					int codigo;
+
+					nome = sc.next();
+					autonomia = Double.parseDouble(sc.next());
+					codigo = Integer.parseInt(sc.next());
+					velocidade = Double.parseDouble(sc.next());
+					custoPorKm = Double.parseDouble(sc.next());
+
+					frota.add(new Caminhao(nome, autonomia, codigo, velocidade, custoPorKm));
+					sc.close();
+			}
+
+			ordenaFrota();
+			return "Frota carregada com sucesso";
+		
+		} catch (IOException e) {
+			return "Erro ao carregar dados da frota";
+		}
+	
+	}
+
+	private String inicializaTipos(){
+		Path tiposARQ = Paths.get("src\\cargas\\tipos_carga.csv");
+
+		try (BufferedReader reader = Files.newBufferedReader(tiposARQ, Charset.defaultCharset())) {
+			reader.readLine(); //pula a primeira (cabecalho)
+			String linha = null;
+ 			while((linha = reader.readLine()) != null) {
+					Scanner sc = new Scanner(linha).useDelimiter(";");
+
+					// fatorPeso;descricao;numero;origem/materialPrincipal;validade/setor
+					String descricao, prop1, prop2;
+					int numero, fatorPeso;
+
+					fatorPeso = Integer.parseInt(sc.next());
+					descricao = sc.next();
+					numero = Integer.parseInt(sc.next());
+					prop1 = sc.next();
+					prop2 = sc.next();
+
+					if(fatorPeso==1) tipos.add(new Duravel(descricao, numero, prop1, prop2));
+					else tipos.add(new Perecivel(descricao, numero, prop1, prop2));
+
+					sc.close();
+			}
+
+			ordenaTipos();
+			return "Tipos de carga carregados com sucesso";
+		
+		} catch (IOException e) {
+			return "Erro ao carregar dados dos tipos de carga";
+		}
+	
+	}
+
+	private String inicializaCargas(){
+		Path cargasARQ = Paths.get("src\\cargas\\cargas.csv");
+
+		try (BufferedReader reader = Files.newBufferedReader(cargasARQ, Charset.defaultCharset())) {
+			reader.readLine(); //pula a primeira (cabecalho)
+			String linha = null;
+ 			while((linha = reader.readLine()) != null) {
+					Scanner sc = new Scanner(linha).useDelimiter(";");
+
+					double valorDeclarado;
+					String aux; //possivel usar para mais verificacoes
+					int codigo, peso, tempoMaximo;
+					Local destino, origem;
+					Cliente cliente;
+					Carga.Status status;
+					TipoCarga tipocarga;
+					Caminhao caminhaoDesignado;
+
+					codigo = Integer.parseInt(sc.next());
+					peso = Integer.parseInt(sc.next());
+					tempoMaximo = Integer.parseInt(sc.next());
+					valorDeclarado = Double.parseDouble(sc.next());
+					destino = localPorCodigo(Integer.parseInt(sc.next()));
+					origem = localPorCodigo(Integer.parseInt(sc.next()));
+					cliente = clientePorCodigo(Integer.parseInt(sc.next()));
+					status = Carga.Status.values()[Integer.parseInt(sc.next()) + 1];
+					tipocarga = tipoPorNumero(Integer.parseInt(sc.next()));
+					aux = sc.next();
+					if (aux.equals("null")) caminhaoDesignado = null;
+					else caminhaoDesignado = caminhaoPorCodigo(Integer.parseInt(aux));
+
+					Carga carga = new Carga(codigo, peso, tempoMaximo, valorDeclarado, destino, origem, cliente, tipocarga);
+					carga.setStatus(status);
+					carga.setCaminhaoDesignado(caminhaoDesignado);
+					cargas.add(carga);
+
+					sc.close();
+			}
+
+			ordenaTipos();
+			return "Cargas carregadas com sucesso";
+		
+		} catch (IOException e) {
+			return "Erro ao carregar dados das cargas";
+		}
+	
+	}
+
+	private String inicializaFila(){
+		Path cargasARQ = Paths.get("src\\aplicacao\\cargasFila.csv");
+
+		try (BufferedReader reader = Files.newBufferedReader(cargasARQ, Charset.defaultCharset())) {
+			reader.readLine(); //pula a primeira (cabecalho)
+			String linha = null;
+ 			while((linha = reader.readLine()) != null) {
+					Scanner sc = new Scanner(linha).useDelimiter(";");
+
+					double valorDeclarado;
+					String aux; //possivel usar para mais verificacoes
+					int codigo, peso, tempoMaximo;
+					Local destino, origem;
+					Cliente cliente;
+					TipoCarga tipocarga;
+					Caminhao caminhaoDesignado;
+
+					codigo = Integer.parseInt(sc.next());
+					peso = Integer.parseInt(sc.next());
+					tempoMaximo = Integer.parseInt(sc.next());
+					valorDeclarado = Double.parseDouble(sc.next());
+					destino = localPorCodigo(Integer.parseInt(sc.next()));
+					origem = localPorCodigo(Integer.parseInt(sc.next()));
+					cliente = clientePorCodigo(Integer.parseInt(sc.next()));
+					sc.next();
+					tipocarga = tipoPorNumero(Integer.parseInt(sc.next()));
+					aux = sc.next();
+					if (aux.equals("null")) caminhaoDesignado = null;
+					else caminhaoDesignado = caminhaoPorCodigo(Integer.parseInt(aux));
+
+					Carga carga = new Carga(codigo, peso, tempoMaximo, valorDeclarado, destino, origem, cliente, tipocarga);
+					carga.setStatus(Carga.Status.PENDENTE);
+					carga.setCaminhaoDesignado(caminhaoDesignado);
+					cargasPendentes.add(carga);
+
+					sc.close();
+			}
+
+			ordenaTipos();
+			return "Fila de cargas carregada com sucesso";
+		
+		} catch (IOException e) {
+			return "Erro ao carregar dados da fila de cargas";
+		}
+	
+	}
 
 	public void novoCaminhao(String nome, double autonomia, double velocidade, double custoPorKm){
 		Caminhao caminhao = new Caminhao(nome, autonomia, velocidade, custoPorKm);
@@ -46,6 +273,31 @@ public class Controle {
 		CaminhaoComparator c = new CaminhaoComparator();
 		frota.sort(c);
 	}
+
+	public void ordenaTipos(){
+		//TODO DEVELOP
+	}
+
+	public Local localPorCodigo(int codigo) {
+		//TODO DESENVOLVER
+		return null;
+	}
+
+	public Cliente clientePorCodigo(int codigo) {
+		//TODO DESENVOLVER
+		return null;
+	}
+
+	public Caminhao caminhaoPorCodigo(int codigo) {
+		//TODO DESENVOLVER
+		return null;
+	}
+
+	public TipoCarga tipoPorNumero(int numero) {
+		//TODO DESENVOLVER
+		return null;
+	}
+
 	public boolean verificaNomeUnicoCaminhao(String nome){
 		if (frota.size()==0) return true;
 		for (Caminhao caminhao : frota) return !nome.equalsIgnoreCase(caminhao.getNome());
@@ -154,7 +406,39 @@ public class Controle {
 		}
 		return s.toString();
 	}*/
-	public void salvarDados() {}
+	public String adicionarDados(String arquivo, String dados){
+		switch(arquivo){
+			case "caminhoes":
+				arquivo = "src\\entidades\\caminhoes.csv";
+				break;
+			case "clientes":
+				arquivo = "src\\entidades\\clientes.csv";
+				break;
+			case "locais":
+				arquivo = "src\\entidades\\locais.csv";
+				break;
+			case "tipos":
+				arquivo = "src\\cargas\\tipos_carga.csv";
+				break;
+			case "cargas":
+				arquivo = "src\\cargas\\cargas.csv";
+				break;
+			case "fila":
+				arquivo = "src\\aplicacao\\cargasFila.csv";
+				break;
+			default:
+				return "Erro ao salvar dados";
+		}
+		Path caminho = Paths.get(arquivo);
+
+		try (BufferedWriter bw = Files.newBufferedWriter(caminho, Charset.defaultCharset(), StandardOpenOption.APPEND);
+            PrintWriter writer = new PrintWriter(bw);){
+			writer.println(dados);
+			return "Dados salvos com sucesso";
+		} catch (Exception e) {
+			return "Erro ao salvar  dados";
+		}
+	}
 
 	static class CaminhaoComparator implements Comparator<Caminhao>{
 		@Override
