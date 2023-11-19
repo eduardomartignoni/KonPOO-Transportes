@@ -1,7 +1,3 @@
-//rever essa classe: construtor(refatorar?), cvsString/toString (esta sem todos os atributos)
-//arrumar coisas relacionadas a distancia
-//revisar métodos no geral
-
 package cargas;
 
 import entidades.Caminhao;
@@ -48,10 +44,9 @@ public class Carga {
 		status = Status.FINALIZADA;
 	}
 
-	/*
 	public double frete() {
 		return precoPorDistancia()+precoPorPeso();
-	}*/
+	}
 
 	public void locar() {
 		status = Status.LOCADA;

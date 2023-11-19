@@ -32,7 +32,7 @@ public class Cliente {
 
 	@Override
 	public String toString() {
-		return "Cliente [codigo=" + codigo + ", nome=" + nome + ", telefone=" + telefone + "]";
+		return String.format("Codigo: %d\tNome: %s\tTelefone: %s", codigo, nome, telefone);
 	}
 
 	public String csvString() {

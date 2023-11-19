@@ -1,15 +1,18 @@
-//comentei alguns métodos que devem ser corrigidos
-//carregar dados eh o salvar dados, tem que fazer os dois
-//verificar se numeros a ser lido são numeros mesmo numeros nos inicializadores
-//fazer metodo ordenaTipos e buscasporcodigo
-//fila de cargas para aquivo: jogar numa pilha toda a fila e jogar a pilha no csv; 
-// 								depois, jogar o csv na fila e estará em ordem
-
-
+/*ATENCAO: ESSA CLASSE TEM METODOS A SEREM DESENVOLVIDOS:
+ * ordenaTipos()
+ * localPorCodigo(int codigo)
+ * clientePorCodigo(int codigo)
+ * caminhaoPorCodigo(int codigo)
+ * carregarDados()
+ * fretar()
+ * tipoPorNumero(int numero)
+ * novoTipo()
+ */
 
 package aplicacao;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
@@ -30,8 +33,6 @@ public class Controle {
 
 	public void carregarDados(){}
 
-
-
 	public Controle() {
 		cargas = new ArrayList<>();
 		cargasPendentes = new LinkedList<>();
@@ -40,8 +41,6 @@ public class Controle {
 		tipos = new ArrayList<>();
 		locais = new ArrayList<>();
 	}
-
-
 
 	public void fretar() {}
 
@@ -57,7 +56,7 @@ public class Controle {
 	}
 
 	private String inicializaLocais(){
-		Path locaisARQ = Paths.get("src\\entidades\\locais.csv");
+		Path locaisARQ = Paths.get("src" + File.separator + "entidades" + File.separator + "locais.csv");
 
 		try (BufferedReader reader = Files.newBufferedReader(locaisARQ, Charset.defaultCharset())) {
 			reader.readLine(); //pula a primeira (cabecalho)
@@ -86,7 +85,7 @@ public class Controle {
 	}
 
 	private String inicializaClientes(){
-		Path clientesARQ = Paths.get("src\\entidades\\clientes.csv");
+		Path clientesARQ = Paths.get("src" + File.separator + "entidades" + File.separator + "clientes.csv");
 
 		try (BufferedReader reader = Files.newBufferedReader(clientesARQ, Charset.defaultCharset())) {
 			reader.readLine(); //pula a primeira (cabecalho)
@@ -115,7 +114,7 @@ public class Controle {
 	}
 
 	private String inicializaCaminhoes(){
-		Path caminhoesARQ = Paths.get("src\\entidades\\caminhoes.csv");
+		Path caminhoesARQ = Paths.get("src" + File.separator + "entidades" + File.separator + "caminhoes.csv");
 
 		try (BufferedReader reader = Files.newBufferedReader(caminhoesARQ, Charset.defaultCharset())) {
 			reader.readLine(); //pula a primeira (cabecalho)
@@ -124,16 +123,17 @@ public class Controle {
 					Scanner sc = new Scanner(linha).useDelimiter(";");
 
 					String nome;
-					double autonomia, velocidade, custoPorKm;
+					double autonomia, velocidade, capacidade;
 					int codigo;
 
 					nome = sc.next();
 					autonomia = Double.parseDouble(sc.next());
 					codigo = Integer.parseInt(sc.next());
 					velocidade = Double.parseDouble(sc.next());
-					custoPorKm = Double.parseDouble(sc.next());
+					sc.next();
+					capacidade = Double.parseDouble(sc.next());
 
-					frota.add(new Caminhao(nome, autonomia, codigo, velocidade, custoPorKm));
+					frota.add(new Caminhao(nome, autonomia, codigo, velocidade, , capacidade));
 					sc.close();
 			}
 
@@ -147,7 +147,7 @@ public class Controle {
 	}
 
 	private String inicializaTipos(){
-		Path tiposARQ = Paths.get("src\\cargas\\tipos_carga.csv");
+		Path tiposARQ = Paths.get("src" + File.separator + "cargas" + File.separator + "tipos_carga.csv");
 
 		try (BufferedReader reader = Files.newBufferedReader(tiposARQ, Charset.defaultCharset())) {
 			reader.readLine(); //pula a primeira (cabecalho)
@@ -181,7 +181,7 @@ public class Controle {
 	}
 
 	private String inicializaCargas(){
-		Path cargasARQ = Paths.get("src\\cargas\\cargas.csv");
+		Path cargasARQ = Paths.get("src" + File.separator + "cargas" + File.separator + "cargas.csv");
 
 		try (BufferedReader reader = Files.newBufferedReader(cargasARQ, Charset.defaultCharset())) {
 			reader.readLine(); //pula a primeira (cabecalho)
@@ -229,7 +229,7 @@ public class Controle {
 	}
 
 	private String inicializaFila(){
-		Path cargasARQ = Paths.get("src\\aplicacao\\cargasFila.csv");
+		Path cargasARQ = Paths.get("src" + File.separator + "aplicacao" + File.separator + "cargasFila.csv");
 
 		try (BufferedReader reader = Files.newBufferedReader(cargasARQ, Charset.defaultCharset())) {
 			reader.readLine(); //pula a primeira (cabecalho)
@@ -280,6 +280,7 @@ public class Controle {
 		frota.add(caminhao);
 		ordenaFrota();
 	}
+
 	public void ordenaFrota(){
 		CaminhaoComparator c = new CaminhaoComparator();
 		frota.sort(c);
@@ -371,10 +372,12 @@ public class Controle {
 
 		return carga.toString();
 	}
+	
 	public void ordenaCargas(){
 		CargasComparator c = new CargasComparator();
 		cargas.sort(c);
 	}
+	
 	public String consultaTodasCargas() {
 		StringBuilder s = new StringBuilder("Cargas: \n\n");
 		if (cargas.size()==0) {
@@ -386,6 +389,7 @@ public class Controle {
 		}
 		return s.toString();
 	}
+	
 	public String consultaCarga(int codigo){
 		for(Carga carga : cargas){
 			if (carga.getCodigo()==codigo) return carga.toString();
@@ -418,25 +422,26 @@ public class Controle {
 		return s.toString();
 	}
 	
+	//acho que esse metodo ficou inutil
 	public String adicionarDados(String arquivo, String dados){
 		switch(arquivo){
 			case "caminhoes":
-				arquivo = "src\\entidades\\caminhoes.csv";
+				arquivo = "src" + File.separator + "entidades" + File.separator + "caminhoes.csv";
 				break;
 			case "clientes":
-				arquivo = "src\\entidades\\clientes.csv";
+				arquivo = "src" + File.separator + "entidades" + File.separator + "clientes.csv";
 				break;
 			case "locais":
-				arquivo = "src\\entidades\\locais.csv";
+				arquivo = "src" + File.separator + "entidades" + File.separator + "locais.csv";
 				break;
 			case "tipos":
-				arquivo = "src\\cargas\\tipos_carga.csv";
+				arquivo = "src" + File.separator + "cargas" + File.separator + "tipos_carga.csv";
 				break;
 			case "cargas":
-				arquivo = "src\\cargas\\cargas.csv";
+				arquivo = "src" + File.separator + "cargas" + File.separator + "cargas.csv";
 				break;
 			case "fila":
-				arquivo = "src\\aplicacao\\cargasFila.csv";
+				arquivo = "src" + File.separator + "aplicacao" + File.separator + "cargasFila.csv";
 				break;
 			default:
 				return "Erro ao salvar dados";
@@ -464,7 +469,7 @@ public class Controle {
 	}	
 
 	private String salvaFila(){
-		Path caminho = Paths.get("src\\aplicacao\\cargasFila.csv");
+		Path caminho = Paths.get("src" + File.separator + "aplicacao" + File.separator + "cargasFila.csv");
 
 		try (BufferedWriter bw = Files.newBufferedWriter(caminho, Charset.defaultCharset(), StandardOpenOption.TRUNCATE_EXISTING);
 			PrintWriter writer = new PrintWriter(bw);){
@@ -480,7 +485,7 @@ public class Controle {
 	}
 
 	private String salvaCargas(){
-		Path caminho = Paths.get("src\\cargas\\cargas.csv");
+		Path caminho = Paths.get("src" + File.separator + "cargas" + File.separator + "cargas.csv");
 
 		try (BufferedWriter bw = Files.newBufferedWriter(caminho, Charset.defaultCharset(), StandardOpenOption.TRUNCATE_EXISTING);
 			PrintWriter writer = new PrintWriter(bw);){
@@ -496,7 +501,7 @@ public class Controle {
 	}
 
 	private String salvaTipos(){
-		Path caminho = Paths.get("src\\cargas\\tipos_carga.csv");
+		Path caminho = Paths.get("src" + File.separator + "cargas" + File.separator + "tipos_carga.csv");
 
 		try (BufferedWriter bw = Files.newBufferedWriter(caminho, Charset.defaultCharset(), StandardOpenOption.TRUNCATE_EXISTING);
 			PrintWriter writer = new PrintWriter(bw);){
@@ -512,12 +517,12 @@ public class Controle {
 	}
 
 	private String salvaCaminhoes(){
-		Path caminho = Paths.get("src\\entidades\\caminhoes.csv");
+		Path caminho = Paths.get("src" + File.separator + "entidades" + File.separator + "caminhoes.csv");
 
 		try (BufferedWriter bw = Files.newBufferedWriter(caminho, Charset.defaultCharset(), StandardOpenOption.TRUNCATE_EXISTING);
 			PrintWriter writer = new PrintWriter(bw);){
 					
-			writer.print("nome;autonomia;codigo;velocidade;custoPorKm\n");
+			writer.print("nome;autonomia;codigo;velocidade;custoPorKm;capacidade\n");
 			for (Caminhao caminhao : frota) {
 				writer.println(caminhao.csvString());
 			}
@@ -528,7 +533,7 @@ public class Controle {
 	}
 
 	private String salvaClientes(){
-		Path caminho = Paths.get("src\\entidades\\clientes.csv");
+		Path caminho = Paths.get("src" + File.separator + "entidades" + File.separator + "clientes.csv");
 
 		try (BufferedWriter bw = Files.newBufferedWriter(caminho, Charset.defaultCharset(), StandardOpenOption.TRUNCATE_EXISTING);
 			PrintWriter writer = new PrintWriter(bw);){
@@ -544,7 +549,7 @@ public class Controle {
 	}
 
 	private String salvaLocais(){
-		Path caminho = Paths.get("src\\entidades\\locais.csv");
+		Path caminho = Paths.get("src" + File.separator + "entidades" + File.separator + "locais.csv");
 
 		try (BufferedWriter bw = Files.newBufferedWriter(caminho, Charset.defaultCharset(), StandardOpenOption.TRUNCATE_EXISTING);
 			PrintWriter writer = new PrintWriter(bw);){

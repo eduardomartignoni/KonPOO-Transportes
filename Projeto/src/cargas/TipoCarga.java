@@ -25,7 +25,7 @@ public abstract class TipoCarga{
 
 	@Override
 	public String toString() {
-		return "Numero: " + numero + ";\nDescricao: " + descricao + ";\n";
+		return "Numero: " + numero + "\tDescricao: " + descricao + "\tFator de Peso: " + fatorPeso;
 	}
 
 	public String csvString(){

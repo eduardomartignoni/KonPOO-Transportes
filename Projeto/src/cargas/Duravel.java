@@ -21,7 +21,7 @@ public class Duravel extends TipoCarga {
 
 	@Override
 	public String toString() {
-		return super.toString() + "Material Principal: " + materialPrincipal + "; Setor: " + setor + ";\n";
+		return super.toString() + "\tMaterial Principal: " + materialPrincipal + "\tSetor: " + setor;
 	}
 
 	@Override

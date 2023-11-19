@@ -7,27 +7,35 @@ public class Caminhao {
 	private static int codigoAUX = 1;
 	private final double velocidade;
 	private double custoPorKm;
+	private final double capacidade;
+	private static double valorGasol = 5.32;
 
-	public Caminhao(String nome, double autonomia, double velocidade, double custoPorKm){
+	public Caminhao(String nome, double autonomia, double velocidade, double capacidade){
 		this.nome = nome;
 		this.autonomia = autonomia;
 		this.velocidade = velocidade;
-		this.custoPorKm = custoPorKm;
+		this.custoPorKm = valorGasol/autonomia;
 		codigo = codigoAUX;
+		this.capacidade = capacidade;
 		codigoAUX++;
 	}
 
-	public Caminhao(String nome, double autonomia, int codigo, double velocidade, double custoPorKm){
+	public Caminhao(String nome, double autonomia, int codigo, double velocidade, double capacidade){
 		this.nome = nome;
 		this.autonomia = autonomia;
 		this.velocidade = velocidade;
-		this.custoPorKm = custoPorKm;
+		this.custoPorKm = valorGasol/autonomia;
 		this.codigo = codigo;
+		this.capacidade = capacidade;
 		codigoAUX++;
 	}
 
 	public String getNome() {
 		return nome;
+	}
+
+	public static void setValorGasol(double valorGasol) {
+		if(valorGasol>0) Caminhao.valorGasol = valorGasol;
 	}
 
 	public double getCustoPorKm(){
@@ -41,10 +49,10 @@ public class Caminhao {
 	@Override
 	public String toString() {
 		return "[" + codigo + "] " + nome + "\n" +
-				autonomia + " Km/\t" + velocidade + " Km/h\t" + custoPorKm + " R$/Km" 				;
+				autonomia + " Km/\t" + velocidade + " Km/h\t" + custoPorKm + " R$/Km\t" + capacidade;
 	}
 
 	public String csvString(){
-		return nome + ";" + autonomia + ";" + codigo +  ";" + velocidade + ";" + custoPorKm;
+		return nome + ";" + autonomia + ";" + codigo +  ";" + velocidade + ";" + custoPorKm + ";" + capacidade;
 	}
 }

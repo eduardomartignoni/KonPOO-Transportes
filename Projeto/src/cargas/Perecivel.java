@@ -22,7 +22,7 @@ public class Perecivel extends TipoCarga{
 
 	@Override
 	public String toString() {
-		return super.toString() + "Origem: " + origem + "; Validade: " + validade + ";\n";
+		return super.toString() + "\tOrigem: " + origem + "\tValidade: " + validade;
 	}
 
 	@Override

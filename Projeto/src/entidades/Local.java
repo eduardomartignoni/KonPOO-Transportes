@@ -40,7 +40,6 @@ public class Local {
 		return nome;
 	}
 
-	//se for passar pra controle, mudar .latitude e .longitude para .getLatitude() e .getLongitude()
 	public static double distancia(Local local1, Local local2) {
 		return Math.sqrt(Math.pow((double)local1.latitude - local2.latitude, 2) + 
 			Math.pow((double)local1.longitude - local2.longitude, 2));
@@ -56,8 +55,7 @@ public class Local {
 
 	@Override
 	public String toString() {
-		return "Local [cidade=" + cidade + ", codigo=" + codigo + ", nome=" + nome + ", latitude=" + latitude
-				+ ", longitude=" + longitude + "]";
+		return String.format("Codigo: %d\tNome: %s\tCidade: %s\t%d%d", codigo, nome, cidade, latitude, longitude);
 	}
 
 	public String csvString() {
