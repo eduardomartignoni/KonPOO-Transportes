@@ -440,6 +440,113 @@ public class Controle {
 		}
 	}
 
+	public String salvaDados() {
+		StringBuilder s = new StringBuilder();
+		s.append(salvaLocais() + "\n");
+		s.append(salvaClientes() + "\n");
+		s.append(salvaCaminhoes() + "\n");
+		s.append(salvaTipos() + "\n");
+		s.append(salvaCargas() + "\n");
+		s.append(salvaFila() + "\n");
+		return s.toString();
+	}	
+
+	private String salvaFila(){
+		Path caminho = Paths.get("src\\aplicacao\\cargasFila.csv");
+
+		try (BufferedWriter bw = Files.newBufferedWriter(caminho, Charset.defaultCharset(), StandardOpenOption.TRUNCATE_EXISTING);
+			PrintWriter writer = new PrintWriter(bw);){
+					
+			writer.print("codigo;peso;tempoMaximo;valorDeclarado;destino(cod);origem(cod);cliente(cod);status(id);tipoCarga(nro);caminhaoDesignado(cod)");
+			for (Carga carga : cargasPendentes) {
+				writer.println(carga.csvString());
+			}
+			return "Fila salva com sucesso";
+		} catch (Exception e) {
+			return "Erro ao salvar fila: dados serão perdidos";
+		}
+	}
+
+	private String salvaCargas(){
+		Path caminho = Paths.get("src\\cargas\\cargas.csv");
+
+		try (BufferedWriter bw = Files.newBufferedWriter(caminho, Charset.defaultCharset(), StandardOpenOption.TRUNCATE_EXISTING);
+			PrintWriter writer = new PrintWriter(bw);){
+					
+			writer.print("codigo;peso;tempoMaximo;valorDeclarado;destino(cod);origem(cod);cliente(cod);status(id);tipoCarga(nro);caminhaoDesignado(cod)");
+			for (Carga carga : cargas) {
+				writer.println(carga.csvString());
+			}
+			return "Cargas salvas com sucesso";
+		} catch (Exception e) {
+			return "Erro ao salvar cargas: dados serão perdidos";
+		}
+	}
+
+	private String salvaTipos(){
+		Path caminho = Paths.get("src\\cargas\\tipos_carga.csv");
+
+		try (BufferedWriter bw = Files.newBufferedWriter(caminho, Charset.defaultCharset(), StandardOpenOption.TRUNCATE_EXISTING);
+			PrintWriter writer = new PrintWriter(bw);){
+					
+			writer.print("fatorPeso;descricao;numero;origem/materialPrincipal;validade/setor");
+			for (TipoCarga tipo : tipos) {
+				writer.println(tipo.csvString());
+			}
+			return "Tipos de carga salvas com sucesso";
+		} catch (Exception e) {
+			return "Erro ao salvar tipos de carga: dados serão perdidos";
+		}
+	}
+
+	private String salvaCaminhoes(){
+		Path caminho = Paths.get("src\\entidades\\caminhoes.csv");
+
+		try (BufferedWriter bw = Files.newBufferedWriter(caminho, Charset.defaultCharset(), StandardOpenOption.TRUNCATE_EXISTING);
+			PrintWriter writer = new PrintWriter(bw);){
+					
+			writer.print("nome;autonomia;codigo;velocidade;custoPorKm");
+			for (Caminhao caminhao : frota) {
+				writer.println(caminhao.csvString());
+			}
+			return "Frota salva com sucesso";
+		} catch (Exception e) {
+			return "Erro ao salvar frota: dados serão perdidos";
+		}
+	}
+
+	private String salvaClientes(){
+		Path caminho = Paths.get("src\\entidades\\clientes.csv");
+
+		try (BufferedWriter bw = Files.newBufferedWriter(caminho, Charset.defaultCharset(), StandardOpenOption.TRUNCATE_EXISTING);
+			PrintWriter writer = new PrintWriter(bw);){
+					
+			writer.print("codigo;nome;telefone");
+			for (Cliente cliente : clientes) {
+				writer.println(cliente.csvString());
+			}
+			return "Clientes salvos com sucesso";
+		} catch (Exception e) {
+			return "Erro ao salvar clientes: dados serão perdidos";
+		}
+	}
+
+	private String salvaLocais(){
+		Path caminho = Paths.get("src\\entidades\\locais.csv");
+
+		try (BufferedWriter bw = Files.newBufferedWriter(caminho, Charset.defaultCharset(), StandardOpenOption.TRUNCATE_EXISTING);
+			PrintWriter writer = new PrintWriter(bw);){
+					
+			writer.print("cidade;codigo;nome;latitude;longitude");
+			for (Local local : locais) {
+				writer.println(local.csvString());
+			}
+			return "Locais salvos com sucesso";
+		} catch (Exception e) {
+			return "Erro ao salvar locais: dados serão perdidos";
+		}
+	}
+
 	static class CaminhaoComparator implements Comparator<Caminhao>{
 		@Override
 		public int compare(Caminhao a, Caminhao b){
