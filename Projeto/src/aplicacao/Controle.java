@@ -25,10 +25,21 @@ public class Controle {
 	private Queue<Carga> cargasPendentes;
 	private ArrayList<Cliente> clientes;
 	private ArrayList<Caminhao> frota;
-	private final ArrayList<Local> locais = new ArrayList<>();
+	private final ArrayList<Local> locais;
 	private ArrayList<TipoCarga> tipos;
 
 	public void carregarDados(){}
+
+
+
+	public Controle() {
+		cargas = new ArrayList<>();
+		cargasPendentes = new LinkedList<>();
+		clientes = new ArrayList<>();
+		frota = new ArrayList<>();
+		tipos = new ArrayList<>();
+		locais = new ArrayList<>();
+	}
 
 
 
@@ -458,7 +469,7 @@ public class Controle {
 		try (BufferedWriter bw = Files.newBufferedWriter(caminho, Charset.defaultCharset(), StandardOpenOption.TRUNCATE_EXISTING);
 			PrintWriter writer = new PrintWriter(bw);){
 					
-			writer.print("codigo;peso;tempoMaximo;valorDeclarado;destino(cod);origem(cod);cliente(cod);status(id);tipoCarga(nro);caminhaoDesignado(cod)");
+			writer.print("codigo;peso;tempoMaximo;valorDeclarado;destino(cod);origem(cod);cliente(cod);status(id);tipoCarga(nro);caminhaoDesignado(cod)\n");
 			for (Carga carga : cargasPendentes) {
 				writer.println(carga.csvString());
 			}
@@ -474,7 +485,7 @@ public class Controle {
 		try (BufferedWriter bw = Files.newBufferedWriter(caminho, Charset.defaultCharset(), StandardOpenOption.TRUNCATE_EXISTING);
 			PrintWriter writer = new PrintWriter(bw);){
 					
-			writer.print("codigo;peso;tempoMaximo;valorDeclarado;destino(cod);origem(cod);cliente(cod);status(id);tipoCarga(nro);caminhaoDesignado(cod)");
+			writer.print("codigo;peso;tempoMaximo;valorDeclarado;destino(cod);origem(cod);cliente(cod);status(id);tipoCarga(nro);caminhaoDesignado(cod)\n");
 			for (Carga carga : cargas) {
 				writer.println(carga.csvString());
 			}
@@ -490,7 +501,7 @@ public class Controle {
 		try (BufferedWriter bw = Files.newBufferedWriter(caminho, Charset.defaultCharset(), StandardOpenOption.TRUNCATE_EXISTING);
 			PrintWriter writer = new PrintWriter(bw);){
 					
-			writer.print("fatorPeso;descricao;numero;origem/materialPrincipal;validade/setor");
+			writer.print("fatorPeso;descricao;numero;origem/materialPrincipal;validade/setor\n");
 			for (TipoCarga tipo : tipos) {
 				writer.println(tipo.csvString());
 			}
@@ -506,7 +517,7 @@ public class Controle {
 		try (BufferedWriter bw = Files.newBufferedWriter(caminho, Charset.defaultCharset(), StandardOpenOption.TRUNCATE_EXISTING);
 			PrintWriter writer = new PrintWriter(bw);){
 					
-			writer.print("nome;autonomia;codigo;velocidade;custoPorKm");
+			writer.print("nome;autonomia;codigo;velocidade;custoPorKm\n");
 			for (Caminhao caminhao : frota) {
 				writer.println(caminhao.csvString());
 			}
@@ -522,7 +533,7 @@ public class Controle {
 		try (BufferedWriter bw = Files.newBufferedWriter(caminho, Charset.defaultCharset(), StandardOpenOption.TRUNCATE_EXISTING);
 			PrintWriter writer = new PrintWriter(bw);){
 					
-			writer.print("codigo;nome;telefone");
+			writer.print("codigo;nome;telefone\n");
 			for (Cliente cliente : clientes) {
 				writer.println(cliente.csvString());
 			}
@@ -538,7 +549,7 @@ public class Controle {
 		try (BufferedWriter bw = Files.newBufferedWriter(caminho, Charset.defaultCharset(), StandardOpenOption.TRUNCATE_EXISTING);
 			PrintWriter writer = new PrintWriter(bw);){
 					
-			writer.print("cidade;codigo;nome;latitude;longitude");
+			writer.print("cidade;codigo;nome;latitude;longitude\n");
 			for (Local local : locais) {
 				writer.println(local.csvString());
 			}
@@ -574,5 +585,9 @@ public class Controle {
 		public int compare(Carga a, Carga b){
 			return a.getCodigo() - b.getCodigo();
 		}
+	}
+
+	public void teste(){
+		for(Cliente c : clientes) System.out.println(c.toString());
 	}
 }
