@@ -22,6 +22,7 @@ import java.util.*;
 import cargas.*;
 import entidades.*;
 
+
 public class Controle {
 
 	private ArrayList<Carga> cargas;
@@ -133,7 +134,7 @@ public class Controle {
 					sc.next();
 					capacidade = Double.parseDouble(sc.next());
 
-					frota.add(new Caminhao(nome, autonomia, codigo, velocidade, , capacidade));
+					frota.add(new Caminhao(nome, autonomia, codigo, velocidade,  capacidade));
 					sc.close();
 			}
 
@@ -287,26 +288,65 @@ public class Controle {
 	}
 
 	public void ordenaTipos(){
-		//TODO DEVELOP
+		
+		Comparator<TipoCarga> c = new Comparator<TipoCarga>(){
+			
+			public int compare(TipoCarga a, TipoCarga b){
+				return a.getDescricao().compareToIgnoreCase(b.getDescricao());
+			}
+		};
+		tipos.sort(c);
 	}
 
 	public Local localPorCodigo(int codigo) {
 		//TODO DESENVOLVER
+		for (Local local : locais) {
+			if (local.getCodigo() == codigo) {
+				System.out.println("Local encontrado" + local.getNome() + " " + local.getCodigo());
+				return local;
+			} else {
+				System.out.println("Local não encontrado");
+			}
+		}
 		return null;
 	}
 
 	public Cliente clientePorCodigo(int codigo) {
-		//TODO DESENVOLVER
+		for (Cliente cliente : clientes) {
+			if (cliente.getCodigo() == codigo) {
+				System.out.println("Cliente encontrado" + cliente.getNome() + " " + cliente.getCodigo());
+				return cliente;
+			}
+			else{
+				System.out.println("Cliente não encontrado");
+			}
+		}
 		return null;
 	}
 
 	public Caminhao caminhaoPorCodigo(int codigo) {
 		//TODO DESENVOLVER
+		for (Caminhao caminhao : frota) {
+			if (caminhao.getCodigo() == codigo) {
+				System.out.println("Caminhao encontrado" + caminhao.getNome() + " " + caminhao.getCodigo());
+				return caminhao;
+			} else {
+				System.out.println("Caminhao não encontrado");
+			}
+		}
 		return null;
 	}
 
 	public TipoCarga tipoPorNumero(int numero) {
 		//TODO DESENVOLVER
+		for (TipoCarga tipo : tipos) {
+			if (tipo.getNumero() == numero) {
+				System.out.println("Tipo encontrado" + tipo.getDescricao() + " " + tipo.getNumero());
+				return tipo;
+			} else {
+				System.out.println("Tipo não encontrado");
+			}
+		}
 		return null;
 	}
 
