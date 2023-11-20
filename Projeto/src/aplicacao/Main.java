@@ -6,7 +6,7 @@ public class Main {
     public static void main(String[] args) {
         // App app = new App();
         // app.run();
-
+        Interface interface1 = new Interface();
         Controle controle = new Controle();
         System.out.println(controle.inicializaDados());
         controle.teste();
