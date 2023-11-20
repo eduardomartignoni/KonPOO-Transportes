@@ -67,9 +67,14 @@ public class Carga {
 	public int getCodigo(){
 		return codigo;
 	}
+
 	public Status getStatus(){
 		return status;
 	}
+
+	public int getPeso(){ return peso;}
+
+	public int getTempoMaximo(){ return tempoMaximo;}
 
 	public void setCaminhaoDesignado(Caminhao caminhaoDesignado){
 		this.caminhaoDesignado = caminhaoDesignado;
@@ -96,7 +101,7 @@ public class Carga {
 		CANCELADA(-1, "Cancelada"), FINALIZADA(0, "Finalizada"),
 		LOCADA(1, "Locada"), PENDENTE(2, "Pendente");
 
-		private int id;
+		private final int id;
 		private final String nome;
 
 		Status(int id, String nome) {

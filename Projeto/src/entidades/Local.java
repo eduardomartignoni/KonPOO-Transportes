@@ -28,10 +28,6 @@ public class Local {
 		codigoAUX++;
 	}
 
-	public String getCidade() {
-		return cidade;
-	}
-
 	public int getCodigo() {
 		return codigo;
 	}
@@ -43,14 +39,6 @@ public class Local {
 	public static double distancia(Local local1, Local local2) {
 		return Math.sqrt(Math.pow((double)local1.latitude - local2.latitude, 2) + 
 			Math.pow((double)local1.longitude - local2.longitude, 2));
-	}
-
-	public int getLatitude() {
-		return latitude;
-	}
-
-	public int getLongitude() {
-		return longitude;
 	}
 
 	@Override

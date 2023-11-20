@@ -2,8 +2,8 @@ package entidades;
 public class Cliente {
 
 	private final int codigo;
-	private String nome;
-	private String telefone;	
+	private final String nome;
+	private final String telefone;
 
 	public Cliente(String nome, String telefone, int codigo) {
 		this.nome = nome;
@@ -16,18 +16,6 @@ public class Cliente {
 
 	public String getNome() {
 		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getTelefone() {
-		return telefone;
-	}
-
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
 	}
 
 	@Override

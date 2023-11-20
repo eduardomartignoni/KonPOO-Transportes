@@ -11,14 +11,6 @@ public abstract class TipoCarga{
 		this.numero = numero;
 	}
 
-	public String getDescricao() {
-		return descricao;
-	}
-
-	public double getFatorPeso() {
-		return fatorPeso;
-	}
-
 	public int getNumero() {
 		return numero;
 	}

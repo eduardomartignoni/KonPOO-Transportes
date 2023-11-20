@@ -17,7 +17,7 @@ public class App {
 
         System.out.println("Insira o nome do destino: ");
         String nome = in.nextLine();
-        // NAO SEI SE É ISSO OS 50KM DA DISTANCIA??
+        // NAO SEI SE É ISSO OS 50KM DA DISTÂNCIA?
         if (controle.verificaAlgumDestinoJaCadastrado()) controle.novoLocal(cidade, nome, 50);
         else System.out.println("Informe a distância da origem: ");
         double distancia = in.nextDouble();
@@ -33,7 +33,7 @@ public class App {
         String nome = in.nextLine();
 
         if ((!controle.verificaNomeUnicoCaminhao(nome))) {
-            int menu = 0;
+            int menu;
             do {
                 System.out.println("""
                         ERRO: CAMINHÃO JÁ CADASTRADO
@@ -61,10 +61,10 @@ public class App {
         System.out.println("\nInsira a velocidade do caminhão: ");
         double velocidade = in.nextDouble();
 
-        System.out.println("\nInsira o custo por Km do caminhão: ");
-        double custoPorKm = in.nextDouble();
+        System.out.println("\nInsira a capacidade em toneladas do caminhao: ");
+        int capacidade = in.nextInt();
 
-        controle.novoCaminhao(nome, autonomia, velocidade, custoPorKm);
+        controle.novoCaminhao(nome, autonomia, velocidade, capacidade);
         System.out.println("Caminhão cadastrado na frota");
     }
 }

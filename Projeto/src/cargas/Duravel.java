@@ -11,14 +11,6 @@ public class Duravel extends TipoCarga {
 		this.setor = setor;
 	}
 
-	public String getMaterialPrincipal() {
-		return materialPrincipal;
-	}
-
-	public String getSetor() {
-		return setor;
-	}
-
 	@Override
 	public String toString() {
 		return super.toString() + "\tMaterial Principal: " + materialPrincipal + "\tSetor: " + setor;

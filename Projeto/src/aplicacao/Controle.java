@@ -1,12 +1,5 @@
 /*ATENCAO: ESSA CLASSE TEM METODOS A SEREM DESENVOLVIDOS:
- * ordenaTipos()
- * localPorCodigo(int codigo)
- * clientePorCodigo(int codigo)
- * caminhaoPorCodigo(int codigo)
- * carregarDados()
- * fretar()
- * tipoPorNumero(int numero)
- * novoTipo()
+ * carregarDados() --> mudei o nome para salvarDados() - estava muito confuso kkk
  */
 
 package aplicacao;
@@ -25,14 +18,12 @@ import entidades.*;
 
 public class Controle {
 
-	private ArrayList<Carga> cargas;
-	private Queue<Carga> cargasPendentes;
-	private ArrayList<Cliente> clientes;
-	private ArrayList<Caminhao> frota;
+	private final ArrayList<Carga> cargas;
+	private final Queue<Carga> cargasPendentes;
+	private final ArrayList<Cliente> clientes;
+	private final ArrayList<Caminhao> frota;
 	private final ArrayList<Local> locais;
-	private ArrayList<TipoCarga> tipos;
-
-	public void carregarDados(){}
+	private final ArrayList<TipoCarga> tipos;
 
 	public Controle() {
 		cargas = new ArrayList<>();
@@ -43,17 +34,57 @@ public class Controle {
 		locais = new ArrayList<>();
 	}
 
-	public void fretar() {}
+	public void salvarDados(){}
+
+	public String fretar() {
+		if (cargasPendentes.isEmpty()) return "ERRO: Nenhuma carga pendente.";
+		StringBuilder s = new StringBuilder();
+
+		for (int i=0; i<cargasPendentes.size();i++) {
+			Carga carga = cargasPendentes.poll();
+
+			int peso = carga.getPeso();
+			double distancia = carga.distancia();
+			int tempoMaximo = carga.getTempoMaximo();
+			int cont = 0;
+			//8h pro dia, distancia em km
+
+			for (Caminhao caminhao : frota) {
+				if (caminhao.getCapacidadePeso() >= peso &&	((distancia / caminhao.getVelocidade()) / 8 > tempoMaximo)) {
+					if (caminhao.getStatus() == Caminhao.Status.DISPONIVEL) {
+						caminhao.locarCaminhao();
+						carga.setCaminhaoDesignado(caminhao);
+						s.append("Carga [").append(carga.getCodigo()).append("]\t--->\tCaminhão [").append(caminhao.getCodigo()).append("]\n");
+						break;
+					}
+					else if (caminhao.getStatus() == Caminhao.Status.LOCADO) cont++;
+				}
+			}
+				if (cont>0) {
+					s.append("Carga [").append(carga.getCodigo()).append("]\t--->\tNenhum Caminhão Disponível");
+					cargasPendentes.add(carga);
+				}
+				else if (cont==0){
+					s.append("Carga [").append(carga.getCodigo()).append("]\t--->\tCarga Cancelada");
+					carga.setStatus(Carga.Status.CANCELADA);
+				}
+		}
+		return s.toString();
+	}
+
+	public void finalizarEntrega(int codigoCaminhao, int codigoCarga){
+		for (Caminhao caminhao : frota)	if (caminhao.getCodigo()==codigoCaminhao) caminhao.disponibilizarCaminhao();
+		for (Carga carga : cargas) if (carga.getCodigo()==codigoCarga) carga.finalizar();
+
+	}
 
 	public String inicializaDados() {
-		StringBuilder s = new StringBuilder();
-		s.append(inicializaLocais() + "\n");
-		s.append(inicializaClientes() + "\n");
-		s.append(inicializaCaminhoes() + "\n");
-		s.append(inicializaTipos() + "\n");
-		s.append(inicializaCargas() + "\n");
-		s.append(inicializaFila() + "\n");
-		return s.toString();
+		return inicializaLocais() + "\n" +
+				inicializaClientes() + "\n" +
+				inicializaCaminhoes() + "\n" +
+				inicializaTipos() + "\n" +
+				inicializaCargas() + "\n" +
+				inicializaFila() + "\n";
 	}
 
 	private String inicializaLocais(){
@@ -61,7 +92,7 @@ public class Controle {
 
 		try (BufferedReader reader = Files.newBufferedReader(locaisARQ, Charset.defaultCharset())) {
 			reader.readLine(); //pula a primeira (cabecalho)
-			String linha = null;
+			String linha;
  			 while((linha = reader.readLine()) != null) {
 					Scanner sc = new Scanner(linha).useDelimiter(";");
 
@@ -90,7 +121,7 @@ public class Controle {
 
 		try (BufferedReader reader = Files.newBufferedReader(clientesARQ, Charset.defaultCharset())) {
 			reader.readLine(); //pula a primeira (cabecalho)
-			String linha = null;
+			String linha;
  			while((linha = reader.readLine()) != null) {
 					Scanner sc = new Scanner(linha).useDelimiter(";");
 
@@ -119,20 +150,22 @@ public class Controle {
 
 		try (BufferedReader reader = Files.newBufferedReader(caminhoesARQ, Charset.defaultCharset())) {
 			reader.readLine(); //pula a primeira (cabecalho)
-			String linha = null;
+			String linha;
  			while((linha = reader.readLine()) != null) {
 					Scanner sc = new Scanner(linha).useDelimiter(";");
 
 					String nome;
-					double autonomia, velocidade, capacidade;
-					int codigo;
+					double autonomia;
+				double velocidade;
+				int capacidade;
+				int codigo;
 
 					nome = sc.next();
 					autonomia = Double.parseDouble(sc.next());
 					codigo = Integer.parseInt(sc.next());
 					velocidade = Double.parseDouble(sc.next());
 					sc.next();
-					capacidade = Double.parseDouble(sc.next());
+					capacidade = Integer.parseInt(sc.next());
 
 					frota.add(new Caminhao(nome, autonomia, codigo, velocidade,  capacidade));
 					sc.close();
@@ -152,22 +185,23 @@ public class Controle {
 
 		try (BufferedReader reader = Files.newBufferedReader(tiposARQ, Charset.defaultCharset())) {
 			reader.readLine(); //pula a primeira (cabecalho)
-			String linha = null;
+			String linha;
  			while((linha = reader.readLine()) != null) {
 					Scanner sc = new Scanner(linha).useDelimiter(";");
 
 					// fatorPeso;descricao;numero;origem/materialPrincipal;validade/setor
-					String descricao, prop1, prop2;
-					int numero, fatorPeso;
+					String descricao, prop1, prop2="Erro";
+					int numero, fatorPeso, prop3=-1;
 
 					fatorPeso = Integer.parseInt(sc.next());
 					descricao = sc.next();
 					numero = Integer.parseInt(sc.next());
 					prop1 = sc.next();
-					prop2 = sc.next();
+					if (fatorPeso==1) prop2 = sc.next();
+					else prop3 = Integer.parseInt(sc.next());
 
 					if(fatorPeso==1) tipos.add(new Duravel(descricao, numero, prop1, prop2));
-					else tipos.add(new Perecivel(descricao, numero, prop1, prop2));
+					else tipos.add(new Perecivel(descricao, numero, prop1, prop3));
 
 					sc.close();
 			}
@@ -186,7 +220,7 @@ public class Controle {
 
 		try (BufferedReader reader = Files.newBufferedReader(cargasARQ, Charset.defaultCharset())) {
 			reader.readLine(); //pula a primeira (cabecalho)
-			String linha = null;
+			String linha;
  			while((linha = reader.readLine()) != null) {
 					Scanner sc = new Scanner(linha).useDelimiter(";");
 
@@ -234,7 +268,7 @@ public class Controle {
 
 		try (BufferedReader reader = Files.newBufferedReader(cargasARQ, Charset.defaultCharset())) {
 			reader.readLine(); //pula a primeira (cabecalho)
-			String linha = null;
+			String linha;
  			while((linha = reader.readLine()) != null) {
 					Scanner sc = new Scanner(linha).useDelimiter(";");
 
@@ -276,7 +310,7 @@ public class Controle {
 	
 	}
 
-	public void novoCaminhao(String nome, double autonomia, double velocidade, double custoPorKm){
+	public void novoCaminhao(String nome, double autonomia, double velocidade, int custoPorKm){
 		Caminhao caminhao = new Caminhao(nome, autonomia, velocidade, custoPorKm);
 		frota.add(caminhao);
 		ordenaFrota();
@@ -288,64 +322,34 @@ public class Controle {
 	}
 
 	public void ordenaTipos(){
-		
-		Comparator<TipoCarga> c = new Comparator<TipoCarga>(){
-			
-			public int compare(TipoCarga a, TipoCarga b){
-				return a.getDescricao().compareToIgnoreCase(b.getDescricao());
-			}
-		};
+		TiposComparator c = new TiposComparator();
 		tipos.sort(c);
 	}
 
 	public Local localPorCodigo(int codigo) {
-		//TODO DESENVOLVER
 		for (Local local : locais) {
-			if (local.getCodigo() == codigo) {
-				System.out.println("Local encontrado" + local.getNome() + " " + local.getCodigo());
-				return local;
-			} else {
-				System.out.println("Local não encontrado");
-			}
+			if (local.getCodigo() == codigo) return local;
 		}
 		return null;
 	}
 
 	public Cliente clientePorCodigo(int codigo) {
 		for (Cliente cliente : clientes) {
-			if (cliente.getCodigo() == codigo) {
-				System.out.println("Cliente encontrado" + cliente.getNome() + " " + cliente.getCodigo());
-				return cliente;
-			}
-			else{
-				System.out.println("Cliente não encontrado");
-			}
+			if (cliente.getCodigo() == codigo) return cliente;
 		}
 		return null;
 	}
 
 	public Caminhao caminhaoPorCodigo(int codigo) {
-		//TODO DESENVOLVER
 		for (Caminhao caminhao : frota) {
-			if (caminhao.getCodigo() == codigo) {
-				System.out.println("Caminhao encontrado" + caminhao.getNome() + " " + caminhao.getCodigo());
-				return caminhao;
-			} else {
-				System.out.println("Caminhao não encontrado");
-			}
+			if (caminhao.getCodigo() == codigo)	return caminhao;
 		}
 		return null;
 	}
 
 	public TipoCarga tipoPorNumero(int numero) {
-		//TODO DESENVOLVER
 		for (TipoCarga tipo : tipos) {
-			if (tipo.getNumero() == numero) {
-				System.out.println("Tipo encontrado" + tipo.getDescricao() + " " + tipo.getNumero());
-				return tipo;
-			} else {
-				System.out.println("Tipo não encontrado");
-			}
+			if (tipo.getNumero() == numero) return tipo;
 		}
 		return null;
 	}
@@ -402,7 +406,25 @@ public class Controle {
 		return s.toString();
 	}
 
-	public void novoTipo() {}
+	public boolean verificaNumeroUnicoTipoCarga(int numero){
+		if (tipos.size()==0) return true;
+		for (TipoCarga tipoCarga : tipos) {
+			if (tipoCarga.getNumero()==numero) return false;
+		}
+		return true;
+	}
+	public void novoPerecivel(String descricao, int numero, String origem, int validade ) {
+		TipoCarga novoPerecivel = new Perecivel(descricao,numero,origem,validade);
+		tipos.add(novoPerecivel);
+		ordenaTipos();
+
+	}
+
+	public void novoDuravel(String descricao, int numero, String materialPrincipal, String setor){
+		TipoCarga novoDuravel = new Duravel(descricao,numero,materialPrincipal,setor);
+		tipos.add(novoDuravel);
+		ordenaTipos();
+	}
 
 	public String novaCarga(int codigo, int peso, int tempoMaximo, double valorDeclarado, Local destino, Local origem, Cliente cliente, TipoCarga tipoCarga){
 		Carga carga = new Carga(codigo, peso, tempoMaximo, valorDeclarado, destino, origem, cliente, tipoCarga);
@@ -464,32 +486,21 @@ public class Controle {
 	
 	//acho que esse metodo ficou inutil
 	public String adicionarDados(String arquivo, String dados){
-		switch(arquivo){
-			case "caminhoes":
-				arquivo = "src" + File.separator + "entidades" + File.separator + "caminhoes.csv";
-				break;
-			case "clientes":
-				arquivo = "src" + File.separator + "entidades" + File.separator + "clientes.csv";
-				break;
-			case "locais":
-				arquivo = "src" + File.separator + "entidades" + File.separator + "locais.csv";
-				break;
-			case "tipos":
-				arquivo = "src" + File.separator + "cargas" + File.separator + "tipos_carga.csv";
-				break;
-			case "cargas":
-				arquivo = "src" + File.separator + "cargas" + File.separator + "cargas.csv";
-				break;
-			case "fila":
-				arquivo = "src" + File.separator + "aplicacao" + File.separator + "cargasFila.csv";
-				break;
-			default:
+		switch (arquivo) {
+			case "caminhoes" -> arquivo = "src" + File.separator + "entidades" + File.separator + "caminhoes.csv";
+			case "clientes" -> arquivo = "src" + File.separator + "entidades" + File.separator + "clientes.csv";
+			case "locais" -> arquivo = "src" + File.separator + "entidades" + File.separator + "locais.csv";
+			case "tipos" -> arquivo = "src" + File.separator + "cargas" + File.separator + "tipos_carga.csv";
+			case "cargas" -> arquivo = "src" + File.separator + "cargas" + File.separator + "cargas.csv";
+			case "fila" -> arquivo = "src" + File.separator + "aplicacao" + File.separator + "cargasFila.csv";
+			default -> {
 				return "Erro ao salvar dados";
+			}
 		}
 		Path caminho = Paths.get(arquivo);
 
 		try (BufferedWriter bw = Files.newBufferedWriter(caminho, Charset.defaultCharset(), StandardOpenOption.APPEND);
-            PrintWriter writer = new PrintWriter(bw);){
+            PrintWriter writer = new PrintWriter(bw)){
 			writer.println(dados);
 			return "Dados salvos com sucesso";
 		} catch (Exception e) {
@@ -498,21 +509,19 @@ public class Controle {
 	}
 
 	public String salvaDados() {
-		StringBuilder s = new StringBuilder();
-		s.append(salvaLocais() + "\n");
-		s.append(salvaClientes() + "\n");
-		s.append(salvaCaminhoes() + "\n");
-		s.append(salvaTipos() + "\n");
-		s.append(salvaCargas() + "\n");
-		s.append(salvaFila() + "\n");
-		return s.toString();
+		return salvaLocais() + "\n" +
+				salvaClientes() + "\n" +
+				salvaCaminhoes() + "\n" +
+				salvaTipos() + "\n" +
+				salvaCargas() + "\n" +
+				salvaFila() + "\n";
 	}	
 
 	private String salvaFila(){
 		Path caminho = Paths.get("src" + File.separator + "aplicacao" + File.separator + "cargasFila.csv");
 
 		try (BufferedWriter bw = Files.newBufferedWriter(caminho, Charset.defaultCharset(), StandardOpenOption.TRUNCATE_EXISTING);
-			PrintWriter writer = new PrintWriter(bw);){
+			PrintWriter writer = new PrintWriter(bw)){
 					
 			writer.print("codigo;peso;tempoMaximo;valorDeclarado;destino(cod);origem(cod);cliente(cod);status(id);tipoCarga(nro);caminhaoDesignado(cod)\n");
 			for (Carga carga : cargasPendentes) {
@@ -528,7 +537,7 @@ public class Controle {
 		Path caminho = Paths.get("src" + File.separator + "cargas" + File.separator + "cargas.csv");
 
 		try (BufferedWriter bw = Files.newBufferedWriter(caminho, Charset.defaultCharset(), StandardOpenOption.TRUNCATE_EXISTING);
-			PrintWriter writer = new PrintWriter(bw);){
+			PrintWriter writer = new PrintWriter(bw)){
 					
 			writer.print("codigo;peso;tempoMaximo;valorDeclarado;destino(cod);origem(cod);cliente(cod);status(id);tipoCarga(nro);caminhaoDesignado(cod)\n");
 			for (Carga carga : cargas) {
@@ -544,7 +553,7 @@ public class Controle {
 		Path caminho = Paths.get("src" + File.separator + "cargas" + File.separator + "tipos_carga.csv");
 
 		try (BufferedWriter bw = Files.newBufferedWriter(caminho, Charset.defaultCharset(), StandardOpenOption.TRUNCATE_EXISTING);
-			PrintWriter writer = new PrintWriter(bw);){
+			PrintWriter writer = new PrintWriter(bw)){
 					
 			writer.print("fatorPeso;descricao;numero;origem/materialPrincipal;validade/setor\n");
 			for (TipoCarga tipo : tipos) {
@@ -560,7 +569,7 @@ public class Controle {
 		Path caminho = Paths.get("src" + File.separator + "entidades" + File.separator + "caminhoes.csv");
 
 		try (BufferedWriter bw = Files.newBufferedWriter(caminho, Charset.defaultCharset(), StandardOpenOption.TRUNCATE_EXISTING);
-			PrintWriter writer = new PrintWriter(bw);){
+			PrintWriter writer = new PrintWriter(bw)){
 					
 			writer.print("nome;autonomia;codigo;velocidade;custoPorKm;capacidade\n");
 			for (Caminhao caminhao : frota) {
@@ -576,7 +585,7 @@ public class Controle {
 		Path caminho = Paths.get("src" + File.separator + "entidades" + File.separator + "clientes.csv");
 
 		try (BufferedWriter bw = Files.newBufferedWriter(caminho, Charset.defaultCharset(), StandardOpenOption.TRUNCATE_EXISTING);
-			PrintWriter writer = new PrintWriter(bw);){
+			PrintWriter writer = new PrintWriter(bw)){
 					
 			writer.print("codigo;nome;telefone\n");
 			for (Cliente cliente : clientes) {
@@ -592,7 +601,7 @@ public class Controle {
 		Path caminho = Paths.get("src" + File.separator + "entidades" + File.separator + "locais.csv");
 
 		try (BufferedWriter bw = Files.newBufferedWriter(caminho, Charset.defaultCharset(), StandardOpenOption.TRUNCATE_EXISTING);
-			PrintWriter writer = new PrintWriter(bw);){
+			PrintWriter writer = new PrintWriter(bw)){
 					
 			writer.print("cidade;codigo;nome;latitude;longitude\n");
 			for (Local local : locais) {
@@ -629,6 +638,12 @@ public class Controle {
 		@Override
 		public int compare(Carga a, Carga b){
 			return a.getCodigo() - b.getCodigo();
+		}
+	}
+	static class TiposComparator implements Comparator<TipoCarga>{
+		@Override
+		public int compare(TipoCarga a, TipoCarga b){
+			return a.getNumero() - b.getNumero();
 		}
 	}
 
