@@ -30,6 +30,7 @@ public class Caminhao {
 		this.custoPorKm = valorGasolina /autonomia;
 		this.codigo = codigo;
 		this.capacidadePeso = capacidade;
+		this.status=status;
 		codigoAUX++;
 	}
 
@@ -66,14 +67,21 @@ public class Caminhao {
 	}
 
 	public String csvString(){
-		return nome + ";" + autonomia + ";" + codigo +  ";" + velocidade + ";" + custoPorKm + ";" + capacidadePeso;
+		return nome + ";" + autonomia + ";" + codigo +  ";" + velocidade + ";" + custoPorKm + ";" + capacidadePeso + ";" + status.getId();
 	}
 
 	public enum Status {
 
 		LOCADO(0), DISPONIVEL(1);
 
+		private final int id;
+
 		Status(int id) {
+			this.id = id;
+		}
+
+		public int getId(){
+			return id;
 		}
 	}
 

@@ -7,24 +7,6 @@ public class App {
     public void run() {
     }
 
-    /*
-    public void novoLocal() {
-        System.out.println("""
-                ---- CADASTRAR NOVO DESTINO ----
-
-                Insira a cidade:\s""");
-        String cidade = in.nextLine();
-
-        System.out.println("Insira o nome do destino: ");
-        String nome = in.nextLine();
-        // NAO SEI SE É ISSO OS 50KM DA DISTÂNCIA?
-        if (controle.verificaAlgumDestinoJaCadastrado()) controle.novoLocal(cidade, nome, 50);
-        else System.out.println("Informe a distância da origem: ");
-        double distancia = in.nextDouble();
-        controle.novoLocal(cidade, nome, distancia);
-        System.out.println("Destino cadastrado.");
-    }*/
-
     public void novoCaminhao() {
         System.out.println("""
                 ---- CADASTRAR NOVO CAMINHÃO ----
