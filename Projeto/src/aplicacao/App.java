@@ -8,21 +8,13 @@ public class App {
     }
 
     public void novoCaminhao() {
-        System.out.println("""
-                ---- CADASTRAR NOVO CAMINHÃO ----
-
-                Insira o nome do caminhão:\s""");
+        System.out.println("---- CADASTRAR NOVO CAMINHÃO ----\n\nInsira o nome do caminhão: ");
         String nome = in.nextLine();
 
         if ((!controle.verificaNomeUnicoCaminhao(nome))) {
             int menu;
             do {
-                System.out.println("""
-                        ERRO: CAMINHÃO JÁ CADASTRADO
-                        Escolha uma opção:
-                                                
-                        [1] Continuar Cadastrando Outro Caminhão
-                        [2] Sair""");
+                System.out.println("ERRO: CAMINHÃO JÁ CADASTRADO\nEscolha uma opção: \n\n[1] Continuar Cadastrando Outro Caminhão\n[2] Sair");
                 menu = in.nextInt();
                 switch (menu) {
                     case 1 -> {
