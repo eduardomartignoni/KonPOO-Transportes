@@ -7,7 +7,7 @@ public class Caminhao {
 	private final int codigo;
 	private static int codigoAUX = 1;
 	private final double velocidade;
-	private final double custoPorKm;
+	private double custoPorKm;
 	private final int capacidadePeso;
 	private static double valorGasolina = 5.32;
 	private Status status;
@@ -20,11 +20,10 @@ public class Caminhao {
 		codigo = codigoAUX;
 		this.capacidadePeso = capacidadePeso;
 		codigoAUX++;
-
-		status = Status.DISPONIVEL;
+		this.status = Status.DISPONIVEL;
 	}
 
-	public Caminhao(String nome, double autonomia, int codigo, double velocidade, int capacidade){
+	public Caminhao(String nome, double autonomia, int codigo, double velocidade, int capacidade, Status status){
 		this.nome = nome;
 		this.autonomia = autonomia;
 		this.velocidade = velocidade;
@@ -68,7 +67,7 @@ public class Caminhao {
 
 	public enum Status {
 
-		DISPONIVEL(1, "Disponivel"), LOCADO(0, "Locado");
+		LOCADO(0, "Locado"), DISPONIVEL(1, "Disponivel");
 
 		private final int id;
 		private final String nome;

@@ -79,6 +79,10 @@ public class Carga {
 	public void setCaminhaoDesignado(Caminhao caminhaoDesignado){
 		this.caminhaoDesignado = caminhaoDesignado;
 	}
+
+	public Caminhao getCaminhaoDesignado(){
+		return caminhaoDesignado;
+	}
 	
 	
 	@Override

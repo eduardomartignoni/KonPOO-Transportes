@@ -1,5 +1,5 @@
 /*ATENCAO: ESSA CLASSE TEM METODOS A SEREM DESENVOLVIDOS:
- * carregarDados() --> mudei o nome para salvarDados() - estava muito confuso kkk
+ * carregarDados()
  */
 
 package aplicacao;
@@ -13,6 +13,7 @@ import java.nio.file.*;
 import java.util.*;
 
 import cargas.*;
+import cargas.Carga.Status;
 import entidades.*;
 
 
@@ -34,7 +35,7 @@ public class Controle {
 		locais = new ArrayList<>();
 	}
 
-	public void salvarDados(){}
+	public void carregarDados(){}
 
 	public String fretar() {
 		if (cargasPendentes.isEmpty()) return "ERRO: Nenhuma carga pendente.";
@@ -72,10 +73,13 @@ public class Controle {
 		return s.toString();
 	}
 
-	public void finalizarEntrega(int codigoCaminhao, int codigoCarga){
-		for (Caminhao caminhao : frota)	if (caminhao.getCodigo()==codigoCaminhao) caminhao.disponibilizarCaminhao();
-		for (Carga carga : cargas) if (carga.getCodigo()==codigoCarga) carga.finalizar();
-
+	public void finalizarEntrega(int codigoCarga){
+		for (Carga carga : cargas){
+			if (carga.getCodigo()==codigoCarga){
+				carga.finalizar();
+				carga.getCaminhaoDesignado().disponibilizarCaminhao();
+			}
+		}
 	}
 
 	public String inicializaDados() {
@@ -156,9 +160,10 @@ public class Controle {
 
 					String nome;
 					double autonomia;
-				double velocidade;
-				int capacidade;
-				int codigo;
+					double velocidade;
+					int capacidade;
+					int codigo;
+					Caminhao.Status status;
 
 					nome = sc.next();
 					autonomia = Double.parseDouble(sc.next());
@@ -166,8 +171,9 @@ public class Controle {
 					velocidade = Double.parseDouble(sc.next());
 					sc.next();
 					capacidade = Integer.parseInt(sc.next());
+					status = Caminhao.Status.values()[Integer.parseInt(sc.next())];
 
-					frota.add(new Caminhao(nome, autonomia, codigo, velocidade,  capacidade));
+					frota.add(new Caminhao(nome, autonomia, codigo, velocidade,  capacidade, status));
 					sc.close();
 			}
 
