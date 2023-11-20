@@ -49,6 +49,10 @@ public class Caminhao {
 		return codigo;
 	}
 
+	public void atualizaCustoPorKM(){
+		this.custoPorKm = valorGasolina / autonomia;
+	}
+
 	public int getCapacidadePeso(){ return capacidadePeso;}
 
 	public double getVelocidade() {

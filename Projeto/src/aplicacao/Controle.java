@@ -653,7 +653,14 @@ public class Controle {
 		}
 	}
 
-	public void teste(){
-		for(Cliente c : clientes) System.out.println(c.toString());
+	// public void teste(){
+	// for(Cliente c : clientes) System.out.println(c.toString());
+	// }
+
+	public void novoValorGasolina(double novaGasolina){
+		Caminhao.setValorGasolina(novaGasolina);
+		for(Caminhao c : frota){
+			c.atualizaCustoPorKM();
+		}
 	}
 }
