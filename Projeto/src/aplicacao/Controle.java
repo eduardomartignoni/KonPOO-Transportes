@@ -13,7 +13,6 @@ import java.nio.file.*;
 import java.util.*;
 
 import cargas.*;
-import cargas.Carga.Status;
 import entidades.*;
 
 
@@ -652,10 +651,6 @@ public class Controle {
 			return a.getNumero() - b.getNumero();
 		}
 	}
-
-	// public void teste(){
-	// for(Cliente c : clientes) System.out.println(c.toString());
-	// }
 
 	public void novoValorGasolina(double novaGasolina){
 		Caminhao.setValorGasolina(novaGasolina);

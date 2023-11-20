@@ -102,19 +102,13 @@ public class Carga {
 	
 	public enum Status {
 
-		CANCELADA(-1, "Cancelada"), FINALIZADA(0, "Finalizada"),
-		LOCADA(1, "Locada"), PENDENTE(2, "Pendente");
+		CANCELADA(-1), FINALIZADA(0),
+		LOCADA(1), PENDENTE(2);
 
 		private final int id;
-		private final String nome;
 
-		Status(int id, String nome) {
+		Status(int id) {
 			this.id = id;
-			this.nome = nome;
-		}
-
-		public String getNome() {
-			return this.nome;
 		}
 	}
 }

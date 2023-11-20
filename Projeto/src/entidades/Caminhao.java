@@ -71,14 +71,9 @@ public class Caminhao {
 
 	public enum Status {
 
-		LOCADO(0, "Locado"), DISPONIVEL(1, "Disponivel");
+		LOCADO(0), DISPONIVEL(1);
 
-		private final int id;
-		private final String nome;
-
-		Status(int id, String nome) {
-			this.id = id;
-			this.nome = nome;
+		Status(int id) {
 		}
 	}
 
