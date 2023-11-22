@@ -133,7 +133,7 @@ public class Controle {
 
 					codigo = Integer.parseInt(sc.next());
 					nome = sc.next();
-					telefone = sc.next();					
+					telefone = sc.next();
 
 					clientes.add(new Cliente(nome, telefone, codigo));
 					sc.close();
@@ -141,11 +141,11 @@ public class Controle {
 
 			ordenaClientes();
 			return "Clientes carregados com sucesso";
-		
+
 		} catch (IOException e) {
 			return "Erro ao carregar dados dos clientes";
 		}
-	
+
 	}
 
 	private String inicializaCaminhoes(){
@@ -178,11 +178,11 @@ public class Controle {
 
 			ordenaFrota();
 			return "Frota carregada com sucesso";
-		
+
 		} catch (IOException e) {
 			return "Erro ao carregar dados da frota";
 		}
-	
+
 	}
 
 	private String inicializaTipos(){
@@ -213,11 +213,11 @@ public class Controle {
 
 			ordenaTipos();
 			return "Tipos de carga carregados com sucesso";
-		
+
 		} catch (IOException e) {
 			return "Erro ao carregar dados dos tipos de carga";
 		}
-	
+
 	}
 
 	private String inicializaCargas(){
@@ -261,11 +261,11 @@ public class Controle {
 
 			ordenaTipos();
 			return "Cargas carregadas com sucesso";
-		
+
 		} catch (IOException e) {
 			return "Erro ao carregar dados das cargas";
 		}
-	
+
 	}
 
 	private String inicializaFila(){
@@ -308,11 +308,11 @@ public class Controle {
 
 			ordenaTipos();
 			return "Fila de cargas carregada com sucesso";
-		
+
 		} catch (IOException e) {
 			return "Erro ao carregar dados da fila de cargas";
 		}
-	
+
 	}
 
 	public void novoCaminhao(String nome, double autonomia, double velocidade, int custoPorKm){
@@ -362,6 +362,14 @@ public class Controle {
 	public boolean verificaNomeUnicoCaminhao(String nome){
 		if (frota.size()==0) return true;
 		for (Caminhao caminhao : frota) return !nome.equalsIgnoreCase(caminhao.getNome());
+		return true;
+	}
+
+	public boolean verificaCodigoUnicoCarga(int codigo){
+		if (cargas.size()==0) return true;
+		for(Carga carga: cargas) {
+			if (carga.getCodigo()==codigo) return false;
+		}
 		return true;
 	}
 
@@ -439,12 +447,12 @@ public class Controle {
 
 		return carga.toString();
 	}
-	
+
 	public void ordenaCargas(){
 		CargasComparator c = new CargasComparator();
 		cargas.sort(c);
 	}
-	
+
 	public String consultaTodasCargas() {
 		StringBuilder s = new StringBuilder("Cargas: \n\n");
 		if (cargas.size()==0) {
@@ -456,6 +464,7 @@ public class Controle {
 		}
 		return s.toString();
 	}
+
 	
 	public String consultaCarga(int codigo){
 		for(Carga carga : cargas){
@@ -463,7 +472,7 @@ public class Controle {
 		}
 		return "ERR0: Carga não encontrada";
 	}
-	
+
 	public String alteraStatus(int codigo, int status) {
 		StringBuilder s = new StringBuilder();
 		for (Carga carga : cargas){
@@ -602,12 +611,12 @@ public class Controle {
 		}
 	}
 
-	private String salvaLocais(){
+	private String salvaLocais() {
 		Path caminho = Paths.get("src" + File.separator + "entidades" + File.separator + "locais.csv");
 
 		try (BufferedWriter bw = Files.newBufferedWriter(caminho, Charset.defaultCharset(), StandardOpenOption.TRUNCATE_EXISTING);
-			PrintWriter writer = new PrintWriter(bw)){
-					
+			 PrintWriter writer = new PrintWriter(bw)) {
+
 			writer.print("cidade;codigo;nome;latitude;longitude\n");
 			for (Local local : locais) {
 				writer.println(local.csvString());
