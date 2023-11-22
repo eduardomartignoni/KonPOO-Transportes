@@ -315,8 +315,8 @@ public class Controle {
 	
 	}
 
-	public void novoCaminhao(String nome, double autonomia, double velocidade, int custoPorKm){
-		Caminhao caminhao = new Caminhao(nome, autonomia, velocidade, custoPorKm);
+	public void novoCaminhao(String nome, double autonomia, double velocidade, int capacidadePeso){
+		Caminhao caminhao = new Caminhao(nome, autonomia, velocidade, capacidadePeso);
 		frota.add(caminhao);
 		ordenaFrota();
 	}
