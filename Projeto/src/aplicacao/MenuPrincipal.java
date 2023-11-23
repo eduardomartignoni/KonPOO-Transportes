@@ -100,7 +100,7 @@ public class MenuPrincipal extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-                //FRETA E MOSTRA O QUE ACONTECEU
+                JOptionPane.showMessageDialog(null, controle.fretar());
             }
         });
         novaCarga.addActionListener(new ActionListener() {
@@ -133,7 +133,9 @@ public class MenuPrincipal extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-                //salvar dados, aparecer mensagens, fechar janelas e encerrar app
+                JOptionPane.showMessageDialog(null, controle.salvaDados());
+                JOptionPane.showMessageDialog(null, "Obrigado por utilizar o sistema!");
+                System.exit(0);
             }
         });
     }
