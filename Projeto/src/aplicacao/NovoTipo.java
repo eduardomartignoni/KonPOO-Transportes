@@ -35,7 +35,7 @@ public class NovoTipo extends JFrame {
         ButtonGroup tipoDeCarga = new ButtonGroup();
             tipoDeCarga.add(radioDuravel);
             tipoDeCarga.add(radioPerecivel);
-        radioDuravel.setSelected(true);
+        radioPerecivel.setSelected(true);
         radioPerecivel.addActionListener(new ActionListener() {
             /**
              * Invoked when an action occurs.
@@ -93,12 +93,12 @@ public class NovoTipo extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try{
-                    String descricao = campoNumero.getText();
-                    int numero = Integer.parseInt(campoValidade.getText());
+                    String descricao = campoDescricao.getText();
+                    int numero = Integer.parseInt(campoNumero.getText());
                     
                     if(radioDuravel.isSelected()){
-                            String material = campoDescricao.getText();
-                            String setor = campoOrigem.getText();
+                            String material = campoMaterial.getText();
+                            String setor = campoSetor.getText();
 
                             if(controle.verificaNumeroUnicoTipoCarga(numero)){
                                 controle.novoDuravel(descricao, numero, material, setor);
@@ -108,8 +108,8 @@ public class NovoTipo extends JFrame {
                                 JOptionPane.showMessageDialog(null, "ERRO: Numero já existente.");
                             }
                         }else if(radioPerecivel.isSelected()){
-                            String origem = campoMaterial.getText();
-                            int validade = Integer.parseInt(campoSetor.getText());
+                            String origem = campoOrigem.getText();
+                            int validade = Integer.parseInt(campoValidade.getText());
 
                             if(controle.verificaNumeroUnicoTipoCarga(numero)){
                                 controle.novoPerecivel(descricao, numero, origem, validade);
