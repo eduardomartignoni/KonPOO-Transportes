@@ -26,14 +26,6 @@ public class Controle {
 	private final ArrayList<TipoCarga> tipos = new ArrayList<>();
 
 	public Controle() {
-//		cargas = new ArrayList<>();
-//		cargasPendentes = new LinkedList<>();
-//		clientes = new ArrayList<>();
-//		frota = new ArrayList<>();
-//		tipos = new ArrayList<>();
-//		locais = new ArrayList<>();
-
-		inicializaDados();
 	}
 
 	public String fretar() {
@@ -365,7 +357,7 @@ public class Controle {
 
 	public boolean verificaNomeUnicoCaminhao(String nome){
 		if (frota.size()==0) return true;
-		for (Caminhao caminhao : frota) return !nome.equalsIgnoreCase(caminhao.getNome());
+		for (Caminhao caminhao : frota) if (nome.equalsIgnoreCase(caminhao.getNome())) return false;
 		return true;
 	}
 

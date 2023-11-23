@@ -1,6 +1,7 @@
 package aplicacao;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -19,17 +20,18 @@ public class MenuPrincipal extends JFrame {
     private JButton fretarCargas;
     private JButton finalizar;
 
-    public MenuPrincipal(Controle controle){
+    public MenuPrincipal(Controle controle) {
         setContentPane(mainMenu);
         setTitle("MENU PRINCIPAL");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setSize(500,500);
+        setSize(500, 500);
         setLocationRelativeTo(null);
         setVisible(true);
 
         String iniciou = controle.inicializaDados();
         JOptionPane.showMessageDialog(null, iniciou);
 
+        //FEITO
         novoCaminhao.addActionListener(new ActionListener() {
             /**
              * Invoked when an action occurs.
@@ -41,6 +43,7 @@ public class MenuPrincipal extends JFrame {
                 new NovoCaminhao(controle);
             }
         });
+        //FEITO
         novoCliente.addActionListener(new ActionListener() {
             /**
              * Invoked when an action occurs.
@@ -61,14 +64,15 @@ public class MenuPrincipal extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-                try{
+                try {
                     int codigo = Integer.parseInt(JOptionPane.showInputDialog("Insira o código da carga a ser finalizada"));
                     JOptionPane.showMessageDialog(null, controle.finalizarEntrega(codigo));
-                }catch (NumberFormatException ex){
+                } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(null, "Código inválido");
                 }
             }
         });
+        //FEITO
         novoLocal.addActionListener(new ActionListener() {
             /**
              * Invoked when an action occurs.
@@ -80,7 +84,7 @@ public class MenuPrincipal extends JFrame {
                 new NovoLocal(controle);
             }
         });
-        //PRONTO; TESTAR
+        //FEITO
         consultarCargas.addActionListener(new ActionListener() {
             /**
              * Invoked when an action occurs.
@@ -92,6 +96,7 @@ public class MenuPrincipal extends JFrame {
                 JOptionPane.showMessageDialog(null, controle.consultaTodasCargas());
             }
         });
+        //FEITO
         fretarCargas.addActionListener(new ActionListener() {
             /**
              * Invoked when an action occurs.
@@ -103,6 +108,7 @@ public class MenuPrincipal extends JFrame {
                 JOptionPane.showMessageDialog(null, controle.fretar());
             }
         });
+        
         novaCarga.addActionListener(new ActionListener() {
             /**
              * Invoked when an action occurs.
@@ -139,4 +145,5 @@ public class MenuPrincipal extends JFrame {
             }
         });
     }
+
 }

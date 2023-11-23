@@ -1,6 +1,7 @@
 package aplicacao;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -32,11 +33,10 @@ public class NovoTipo extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
 
-        radioDuravel = new JRadioButton();
-        radioPerecivel = new JRadioButton();
         ButtonGroup tipoDeCarga = new ButtonGroup();
-        tipoDeCarga.add(radioDuravel);
-        tipoDeCarga.add(radioPerecivel);
+            tipoDeCarga.add(radioDuravel);
+            tipoDeCarga.add(radioPerecivel);
+        radioDuravel.setSelected(true);
         radioPerecivel.addActionListener(new ActionListener() {
             /**
              * Invoked when an action occurs.
@@ -73,9 +73,40 @@ public class NovoTipo extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-                //muda dependendo de qual radiobutton
-                //radioPerecivel.isSelected()
-            }
-        });
+                try{
+                    String descricao = textField1.getText();
+                    int numero = Integer.parseInt(textField4.getText());
+                    
+                    if(radioDuravel.isSelected()){
+                            String material = textField2.getText();
+                            String setor = textField3.getText();
+
+                            if(controle.verificaNumeroUnicoTipoCarga(numero)){
+                                controle.novoDuravel(descricao, numero, material, setor);
+                                JOptionPane.showMessageDialog(null, "Carga durável cadastrada com sucesso!");
+                                dispose();
+                            }else {
+                                JOptionPane.showMessageDialog(null, "ERRO: Numero já existente.");
+                            }
+                        }else if(radioPerecivel.isSelected()){
+                            String origem = textField5.getText();
+                            int validade = Integer.parseInt(textField6.getText());
+
+                            if(controle.verificaNumeroUnicoTipoCarga(numero)){
+                                controle.novoPerecivel(descricao, numero, origem, validade);
+                                JOptionPane.showMessageDialog(null, "Carga perecível cadastrada com sucesso!");
+                                dispose();
+                            }else {
+                                JOptionPane.showMessageDialog(null, "ERRO: Numero já existente.");
+                            }
+                        }
+                    
+                    dispose();
+                    
+                    }catch(Exception ex){
+                            JOptionPane.showMessageDialog(null, "ERRO: Há campos invalidos.");
+                        }
+                }
+            });
     }
 }
