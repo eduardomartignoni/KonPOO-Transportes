@@ -46,6 +46,7 @@ public class Controle {
 
 			int peso = carga.getPeso();
 			int cont = 0;
+			boolean flag = true;
 			//8h pro dia, distancia em km
 
 			for (Caminhao caminhao : frota) {
@@ -54,12 +55,13 @@ public class Controle {
 						caminhao.locarCaminhao();
 						carga.setCaminhaoDesignado(caminhao);
 						s.append("Carga [").append(carga.getCodigo()).append("]\t--->\tCaminhão [").append(caminhao.getCodigo()).append("]\n");
+						flag = false;
 						break;
 					}
 					else if (caminhao.getStatus() == Caminhao.Status.LOCADO) cont++;
 				}
 			}
-				if (cont>0) {
+				if (cont>0 && flag) {
 					s.append("Carga [").append(carga.getCodigo()).append("]\t--->\tNenhum Caminhão Disponível\n");
 					cargasPendentes.add(carga);
 				}
@@ -554,8 +556,8 @@ public class Controle {
 			PrintWriter writer = new PrintWriter(bw)){
 					
 			writer.print("codigo;peso;tempoMaximo;valorDeclarado;destino(cod);origem(cod);cliente(cod);status(id);tipoCarga(nro);caminhaoDesignado(cod)\n");
-			for (Carga carga : cargas) {
-				writer.println(carga.csvString());
+			for (Carga 	c : cargas) {
+				writer.println(c.csvString());
 			}
 			return "Cargas salvas com sucesso";
 		} catch (Exception e) {
@@ -585,7 +587,7 @@ public class Controle {
 		try (BufferedWriter bw = Files.newBufferedWriter(caminho, Charset.defaultCharset(), StandardOpenOption.TRUNCATE_EXISTING);
 			PrintWriter writer = new PrintWriter(bw)){
 					
-			writer.print("nome;autonomia;codigo;velocidade;custoPorKm;capacidade\n");
+			writer.print("nome;autonomia;codigo;velocidade;custoPorKm;capacidade;status\n");
 			for (Caminhao caminhao : frota) {
 				writer.println(caminhao.csvString());
 			}

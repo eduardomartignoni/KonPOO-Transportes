@@ -103,9 +103,12 @@ public class Carga {
 	}
 
 	public String csvString(){
+		if (caminhaoDesignado != null) return codigo + ";" + peso + ";" + tempoMaximo + ";" + valorDeclarado + ";" + destino.getCodigo() + ";" +
+			 origem.getCodigo() + ";" + cliente.getCodigo() + ";" + status.id + ";" + tipoCarga.getNumero() + ";" + 
+			 String.format("%d", caminhaoDesignado.getCodigo());
 		return codigo + ";" + peso + ";" + tempoMaximo + ";" + valorDeclarado + ";" + destino.getCodigo() + ";" +
 			 origem.getCodigo() + ";" + cliente.getCodigo() + ";" + status.id + ";" + tipoCarga.getNumero() + ";" + 
-			 caminhaoDesignado.getCodigo();
+			 "null";
 	}
 	
 	public enum Status {
