@@ -23,7 +23,14 @@ Alterar a situação de uma carga, - o usuário pode alterar o status de uma car
 
 Fretar cargas: o sistema irá automaticamente designar um caminhão para cada carga, com base na Queue de cargas pendentes. Caso haja um caminhão com capacidade de realizar o frete, mas esse mesmo já se encontre locado, a carga voltará para o final da fila. Caso não haja nenhum caminhão com capacidade de realizar o frete, a carga será cancelada. No final é impresso na tela qual a situação de cada carga.
 
-Sair - finaliza o programa salvando os dados inseridos pelo usuário nos arquivos.csv
+Sair - finaliza o programa salvando os dados inseridos pelo usuário nos arquivos.csv.
+
+
+Coleções utilizadas:
+
+ArrayList - utilizado para armazenar as cargas, clientes, caminhões (frota), locais e tipos de carga.
+Queue - utilizado para armazenar as cargas pendentes, e no metodo fretar designar um caminhão para cada carga seguindo as regras de fila: primeiro a entrar, primeiro a sair.
+Comparator - utilizado para ordenas os ArrayLists.
 
 
 Algumas das dificuldades que encontramos foram:
