@@ -2,8 +2,6 @@ package aplicacao;
 import cargas.TipoCarga;
 import entidades.Cliente;
 import entidades.Local;
-
-import java.util.InputMismatchException;
 import java.util.Objects;
 import java.util.Scanner;
 public class App {

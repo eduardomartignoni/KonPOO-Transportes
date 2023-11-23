@@ -32,6 +32,20 @@ public class NovoCliente extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
+                try{
+                    String nome = campoNome.getText();
+                    String telefone = campoTelefone.getText();
+                    int codigo= Integer.parseInt(campoCodigo.getText());
+                    if (!controle.verificaCodigoUnicoCliente(codigo)){
+                        JOptionPane.showMessageDialog(null, "ERRO: CÓDIGO DO CLIENTE DEVE SER ÚNICO");
+                        return;
+                    }
+                    controle.novoCliente(codigo,nome,telefone);
+                    JOptionPane.showMessageDialog(null, "Cliente cadastrado com sucesso");
+                    dispose();
+                }catch (NumberFormatException exception){
+                    JOptionPane.showMessageDialog(null, "ERRO: DADOS INSERIDOS INCORRETAMENTE");
+                }
 
             }
         });

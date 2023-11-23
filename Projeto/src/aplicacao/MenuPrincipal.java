@@ -23,7 +23,7 @@ public class MenuPrincipal extends JFrame {
         setContentPane(mainMenu);
         setTitle("MENU PRINCIPAL");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setSize(500,500);
+        setSize(800,800);
         setLocationRelativeTo(null);
         setVisible(true);
 
