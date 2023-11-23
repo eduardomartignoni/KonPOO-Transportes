@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MenuPrincipal extends JFrame {
+
     private JButton novoCliente;
     private JPanel mainMenu;
     private JButton novoCaminhao;
@@ -18,15 +19,16 @@ public class MenuPrincipal extends JFrame {
     private JButton fretarCargas;
     private JButton finalizar;
 
-
     public MenuPrincipal(Controle controle){
         setContentPane(mainMenu);
         setTitle("MENU PRINCIPAL");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setSize(500,500);
         setLocationRelativeTo(null);
         setVisible(true);
 
+        String iniciou = controle.inicializaDados();
+        JOptionPane.showMessageDialog(null, iniciou);
 
         novoCaminhao.addActionListener(new ActionListener() {
             /**
@@ -50,6 +52,7 @@ public class MenuPrincipal extends JFrame {
                 new NovoCliente(controle);
             }
         });
+        //FEITO
         finalizarCarga.addActionListener(new ActionListener() {
             /**
              * Invoked when an action occurs.
@@ -58,7 +61,12 @@ public class MenuPrincipal extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showInputDialog("Insira o código da carga a ser finalizada");
+                try{
+                    int codigo = Integer.parseInt(JOptionPane.showInputDialog("Insira o código da carga a ser finalizada"));
+                    JOptionPane.showMessageDialog(null, controle.finalizarEntrega(codigo));
+                }catch (NumberFormatException ex){
+                    JOptionPane.showMessageDialog(null, "Código inválido");
+                }
             }
         });
         novoLocal.addActionListener(new ActionListener() {
@@ -72,6 +80,7 @@ public class MenuPrincipal extends JFrame {
                 new NovoLocal(controle);
             }
         });
+        //PRONTO; TESTAR
         consultarCargas.addActionListener(new ActionListener() {
             /**
              * Invoked when an action occurs.
@@ -80,7 +89,7 @@ public class MenuPrincipal extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-                //IMPRIME CARGAS
+                JOptionPane.showMessageDialog(null, controle.consultaTodasCargas());
             }
         });
         fretarCargas.addActionListener(new ActionListener() {

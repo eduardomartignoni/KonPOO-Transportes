@@ -73,13 +73,15 @@ public class Controle {
 		return s.toString();
 	}
 
-	public void finalizarEntrega(int codigoCarga){
+	public String finalizarEntrega(int codigoCarga){
 		for (Carga carga : cargas){
 			if (carga.getCodigo()==codigoCarga){
 				carga.finalizar();
 				carga.getCaminhaoDesignado().disponibilizarCaminhao();
+				return "Entrega finalizada com sucesso";
 			}
 		}
+		return "Carga não encontrada";
 	}
 
 	public String inicializaDados() {
