@@ -34,7 +34,17 @@ public class NovoLocal extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                try{
+                    String nome = campoNome.getText();
+                    String cidade = campoCidade.getText();
+                    int latitude = Integer.parseInt(campoLatitude.getText());
+                    int longitude = Integer.parseInt(campoLongitude.getText());
+                    controle.novoLocal(cidade,nome,latitude,longitude);
+                    JOptionPane.showMessageDialog(null, "Destino cadastrado com sucesso");
+                    dispose();
+                }catch (NumberFormatException exception){
+                    JOptionPane.showMessageDialog(null, "ERRO: DADOS INSERIDOS INCORRETAMENTE");
+                }
             }
         });
     }
