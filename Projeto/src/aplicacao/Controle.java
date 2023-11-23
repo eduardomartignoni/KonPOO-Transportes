@@ -57,7 +57,7 @@ public class Controle {
 					s.append("Carga [").append(carga.getCodigo()).append("]\t--->\tNenhum Caminhão Disponível\n");
 					cargasPendentes.add(carga);
 				}
-				else if (cont==0){
+				else if (cont==0 && flag){
 					s.append("Carga [").append(carga.getCodigo()).append("]\t--->\tCarga Cancelada\n");
 					carga.setStatus(Carga.Status.CANCELADA);
 				}

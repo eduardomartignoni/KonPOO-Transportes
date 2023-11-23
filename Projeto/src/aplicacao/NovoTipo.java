@@ -1,23 +1,22 @@
 package aplicacao;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class NovoTipo extends JFrame {
 
     private JPanel novoTipo;
-    private JTextField textField1;
-    private JTextField textField2;
+    private JTextField campoNumero;
+    private JTextField campoDescricao;
     private JRadioButton radioPerecivel;
     private JRadioButton radioDuravel;
-    private JTextField textField3;
-    private JTextField textField5;
+    private JTextField campoOrigem;
+    private JTextField campoMaterial;
     private JLabel labelNumero;
     private JLabel labelDescricao;
-    private JTextField textField4;
-    private JTextField textField6;
+    private JTextField campoValidade;
+    private JTextField campoSetor;
     private JLabel labelOrigem;
     private JLabel labelMaterial;
     private JLabel labelValidade;
@@ -49,6 +48,16 @@ public class NovoTipo extends JFrame {
                 labelValidade.setEnabled(true);
                 labelMaterial.setEnabled(false);
                 labelSetor.setEnabled(false);
+
+                campoOrigem.setEnabled(true);
+                campoValidade.setEnabled(true);
+                campoMaterial.setEnabled(false);
+                campoSetor.setEnabled(false);
+
+                campoOrigem.setEditable(true);
+                campoValidade.setEditable(true);
+                campoMaterial.setEditable(false);
+                campoSetor.setEditable(false);
             }
         });
         radioDuravel.addActionListener(new ActionListener() {
@@ -63,6 +72,16 @@ public class NovoTipo extends JFrame {
                 labelValidade.setEnabled(false);
                 labelMaterial.setEnabled(true);
                 labelSetor.setEnabled(true);
+
+                campoOrigem.setEnabled(false);
+                campoValidade.setEnabled(false);
+                campoMaterial.setEnabled(true);
+                campoSetor.setEnabled(true);
+
+                campoOrigem.setEditable(false);
+                campoValidade.setEditable(false);
+                campoMaterial.setEditable(true);
+                campoSetor.setEditable(true);
             }
         });
         cadastrar.addActionListener(new ActionListener() {
@@ -74,12 +93,12 @@ public class NovoTipo extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try{
-                    String descricao = textField1.getText();
-                    int numero = Integer.parseInt(textField4.getText());
+                    String descricao = campoNumero.getText();
+                    int numero = Integer.parseInt(campoValidade.getText());
                     
                     if(radioDuravel.isSelected()){
-                            String material = textField2.getText();
-                            String setor = textField3.getText();
+                            String material = campoDescricao.getText();
+                            String setor = campoOrigem.getText();
 
                             if(controle.verificaNumeroUnicoTipoCarga(numero)){
                                 controle.novoDuravel(descricao, numero, material, setor);
@@ -89,8 +108,8 @@ public class NovoTipo extends JFrame {
                                 JOptionPane.showMessageDialog(null, "ERRO: Numero já existente.");
                             }
                         }else if(radioPerecivel.isSelected()){
-                            String origem = textField5.getText();
-                            int validade = Integer.parseInt(textField6.getText());
+                            String origem = campoMaterial.getText();
+                            int validade = Integer.parseInt(campoSetor.getText());
 
                             if(controle.verificaNumeroUnicoTipoCarga(numero)){
                                 controle.novoPerecivel(descricao, numero, origem, validade);
