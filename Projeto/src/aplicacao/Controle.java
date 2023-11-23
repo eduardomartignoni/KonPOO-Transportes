@@ -18,20 +18,20 @@ import entidades.*;
 
 public class Controle {
 
-	private final ArrayList<Carga> cargas;
-	private final Queue<Carga> cargasPendentes;
-	private final ArrayList<Cliente> clientes;
-	private final ArrayList<Caminhao> frota;
-	private final ArrayList<Local> locais;
-	private final ArrayList<TipoCarga> tipos;
+	private final ArrayList<Carga> cargas = new ArrayList<>();
+	private final Queue<Carga> cargasPendentes = new LinkedList<>();
+	private final ArrayList<Cliente> clientes = new ArrayList<>();
+	private final ArrayList<Caminhao> frota = new ArrayList<>();
+	private final ArrayList<Local> locais = new ArrayList<>();
+	private final ArrayList<TipoCarga> tipos = new ArrayList<>();
 
 	public Controle() {
-		cargas = new ArrayList<>();
-		cargasPendentes = new LinkedList<>();
-		clientes = new ArrayList<>();
-		frota = new ArrayList<>();
-		tipos = new ArrayList<>();
-		locais = new ArrayList<>();
+//		cargas = new ArrayList<>();
+//		cargasPendentes = new LinkedList<>();
+//		clientes = new ArrayList<>();
+//		frota = new ArrayList<>();
+//		tipos = new ArrayList<>();
+//		locais = new ArrayList<>();
 
 		inicializaDados();
 	}
@@ -202,10 +202,10 @@ public class Controle {
 					descricao = sc.next();
 					numero = Integer.parseInt(sc.next());
 					prop1 = sc.next();
-					if (fatorPeso==1) prop2 = sc.next();
+					if (fatorPeso<2) prop2 = sc.next();
 					else prop3 = Integer.parseInt(sc.next());
 
-					if(fatorPeso==1) tipos.add(new Duravel(descricao, numero, prop1, prop2));
+					if(fatorPeso<2) tipos.add(new Duravel(descricao, numero, prop1, prop2));
 					else tipos.add(new Perecivel(descricao, numero, prop1, prop3));
 
 					sc.close();
