@@ -341,7 +341,13 @@ public class Controle {
 		}
 		return null;
 	}
-
+	public boolean verificaCodigoUnicoLocal(int codigo){
+		if (locais.size()==0) return true;
+		for (Local local : locais) {
+			if (local.getCodigo()==codigo) return false;
+		}
+		return true;
+	}
 	public Cliente clientePorCodigo(int codigo) {
 		for (Cliente cliente : clientes) {
 			if (cliente.getCodigo() == codigo) return cliente;
