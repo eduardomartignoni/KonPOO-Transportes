@@ -53,6 +53,7 @@ public class Carga {
 	}
 
 	public double precoPorDistancia() {
+		if(caminhaoDesignado==null) return 0;
 		return distancia()*caminhaoDesignado.getCustoPorKm();
 	}
 
@@ -78,6 +79,7 @@ public class Carga {
 
 	public void setCaminhaoDesignado(Caminhao caminhaoDesignado){
 		this.caminhaoDesignado = caminhaoDesignado;
+		this.status = Status.LOCADA;
 	}
 
 	public Caminhao getCaminhaoDesignado(){
@@ -87,6 +89,12 @@ public class Carga {
 	
 	@Override
 	public String toString() {
+		if (caminhaoDesignado==null){
+			return  "Carga [" + codigo + "] "+ status + " - " + tipoCarga + "\n" +
+					"Cliente: "+ cliente + "\tOrigem: " + origem + "\tDestino: " + destino + "\n" +
+					peso + " t\t" + valorDeclarado + " R$\t" + tempoMaximo + " dias\n\n" + "\n" +
+					"Valor Total do Frete: " + String.format("%.2f", frete()) + " R$";
+		}
 		return  "Carga [" + codigo + "] "+ status + " - " + tipoCarga + "\n" +
 				"Cliente: "+ cliente + "\tOrigem: " + origem + "\tDestino: " + destino + "\n" +
 				peso + " t\t" + valorDeclarado + " R$\t" + tempoMaximo + " dias\n\n" +

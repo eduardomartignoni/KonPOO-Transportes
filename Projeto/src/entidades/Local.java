@@ -43,7 +43,7 @@ public class Local {
 
 	@Override
 	public String toString() {
-		return String.format("Codigo: %d\tNome: %s\tCidade: %s\t%d%d", codigo, nome, cidade, latitude, longitude);
+		return String.format("Codigo: %d\tNome: %s\tCidade: %s\t%d %d", codigo, nome, cidade, latitude, longitude);
 	}
 
 	public String csvString() {

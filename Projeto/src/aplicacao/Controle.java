@@ -32,9 +32,9 @@ public class Controle {
 		frota = new ArrayList<>();
 		tipos = new ArrayList<>();
 		locais = new ArrayList<>();
-	}
 
-	public void carregarDados(){}
+		inicializaDados();
+	}
 
 	public String fretar() {
 		if (cargasPendentes.isEmpty()) return "ERRO: Nenhuma carga pendente.";
@@ -42,15 +42,14 @@ public class Controle {
 
 		for (int i=0; i<cargasPendentes.size();i++) {
 			Carga carga = cargasPendentes.poll();
+			if (carga==null) break;
 
 			int peso = carga.getPeso();
-			double distancia = carga.distancia();
-			int tempoMaximo = carga.getTempoMaximo();
 			int cont = 0;
 			//8h pro dia, distancia em km
 
 			for (Caminhao caminhao : frota) {
-				if (caminhao.getCapacidadePeso() >= peso &&	((distancia / caminhao.getVelocidade()) / 8 > tempoMaximo)) {
+				if (caminhao.getCapacidadePeso() >= peso) {
 					if (caminhao.getStatus() == Caminhao.Status.DISPONIVEL) {
 						caminhao.locarCaminhao();
 						carga.setCaminhaoDesignado(caminhao);
@@ -61,11 +60,11 @@ public class Controle {
 				}
 			}
 				if (cont>0) {
-					s.append("Carga [").append(carga.getCodigo()).append("]\t--->\tNenhum Caminhão Disponível");
+					s.append("Carga [").append(carga.getCodigo()).append("]\t--->\tNenhum Caminhão Disponível\n");
 					cargasPendentes.add(carga);
 				}
 				else if (cont==0){
-					s.append("Carga [").append(carga.getCodigo()).append("]\t--->\tCarga Cancelada");
+					s.append("Carga [").append(carga.getCodigo()).append("]\t--->\tCarga Cancelada\n");
 					carga.setStatus(Carga.Status.CANCELADA);
 				}
 		}
@@ -196,9 +195,10 @@ public class Controle {
 
 					// fatorPeso;descricao;numero;origem/materialPrincipal;validade/setor
 					String descricao, prop1, prop2="Erro";
-					int numero, fatorPeso, prop3=-1;
+					int numero, prop3=-1;
+					double fatorPeso;
 
-					fatorPeso = Integer.parseInt(sc.next());
+					fatorPeso = Double.parseDouble(sc.next());
 					descricao = sc.next();
 					numero = Integer.parseInt(sc.next());
 					prop1 = sc.next();
@@ -414,7 +414,7 @@ public class Controle {
 			return s.toString();
 		}
 		for (Local local : locais) {
-			s.append(local.toString());
+			s.append(local.toString()).append("\n");
 		}
 		return s.toString();
 	}
@@ -439,13 +439,12 @@ public class Controle {
 		ordenaTipos();
 	}
 
-	public String novaCarga(int codigo, int peso, int tempoMaximo, double valorDeclarado, Local destino, Local origem, Cliente cliente, TipoCarga tipoCarga){
+	public void novaCarga(int codigo, int peso, int tempoMaximo, double valorDeclarado, Local destino, Local origem, Cliente cliente, TipoCarga tipoCarga){
 		Carga carga = new Carga(codigo, peso, tempoMaximo, valorDeclarado, destino, origem, cliente, tipoCarga);
 		cargasPendentes.add(carga);
 		cargas.add(carga);
 		ordenaCargas();
 
-		return carga.toString();
 	}
 
 	public void ordenaCargas(){
@@ -485,6 +484,7 @@ public class Controle {
 				}
 				if (status==0) {
 					carga.finalizar();
+					finalizarEntrega(codigo);
 					s.append("Carga Finalizada");
 					break;
 				}

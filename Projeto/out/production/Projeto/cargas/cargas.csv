@@ -1,1 +1,5 @@
 codigo;peso;tempoMaximo;valorDeclarado;destino(cod);origem(cod);cliente(cod);status(id);tipoCarga(nro);caminhaoDesignado(cod)
+123;100;1000;100.0;13;1;123;-1;1;1
+1234;10;20;2000.0;1;14;123;2;1;1
+123456;10;200;1000.0;1;2;123;2;1;2
+12345689;10;20;1000.0;1;14;123;2;2;2
